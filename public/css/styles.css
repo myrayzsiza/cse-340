@@ -1,6 +1,484 @@
-/******* Change Box Model ***************/
-*,
-*:before,
-*:after {
+/* ==========================================
+ * CSE Motors - Professional Styles
+ * Mobile-First Responsive Design
+ * ========================================== */
+
+/* ==========================================
+ * CSS Variables for Consistent Theming
+ * ========================================== */
+:root {
+  --dark-bg: #1a1a1a;
+  --light-text: #f5f5f5;
+  --blue-primary: #0066cc;
+  --blue-dark: #004a99;
+  --red-accent: #d32f2f;
+  --red-hover: #b71c1c;
+  --border-color: #333;
+  --card-bg: #2a2a2a;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --font-sans: 'Arial', 'Roboto', sans-serif;
+  --transition: all 0.3s ease;
+}
+
+/* ==========================================
+ * Reset & Base Styles
+ * ========================================== */
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--dark-bg);
+  color: var(--light-text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ==========================================
+ * Typography
+ * ========================================== */
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--light-text);
+  margin-bottom: var(--spacing-sm);
+}
+
+h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--blue-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--light-text);
+  margin-bottom: var(--spacing-sm);
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--light-text);
+  margin-bottom: var(--spacing-sm);
+}
+
+a {
+  color: var(--blue-primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--red-accent);
+  text-decoration: underline;
+}
+
+/* ==========================================
+ * Header Styles
+ * ========================================== */
+header {
+  background-color: var(--dark-bg);
+  border-bottom: 2px solid var(--blue-primary);
+  padding: var(--spacing-lg) var(--spacing-sm);
+  text-align: center;
+}
+
+header h1 {
+  color: var(--blue-primary);
+  font-size: 2rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+.tagline {
+  color: var(--red-accent);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ==========================================
+ * Navigation Styles
+ * ========================================== */
+.main-nav {
+  background-color: var(--card-bg);
+  padding: var(--spacing-sm);
+  border-top: 1px solid var(--border-color);
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.nav-link {
+  display: block;
+  padding: var(--spacing-sm);
+  background-color: var(--dark-bg);
+  color: var(--light-text);
+  border-left: 3px solid var(--blue-primary);
+  text-align: left;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: var(--blue-primary);
+  color: var(--light-text);
+  border-left-color: var(--red-accent);
+  text-decoration: none;
+}
+
+/* ==========================================
+ * Main Content Area
+ * ========================================== */
+main {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ==========================================
+ * Hero Section
+ * ========================================== */
+.hero {
+  background: linear-gradient(135deg, rgba(0, 102, 204, 0.8), rgba(211, 47, 47, 0.8)),
+              url('/images/site/hero-bg.jpg') center/cover;
+  background-attachment: scroll;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-sm);
+  color: var(--light-text);
+}
+
+.hero-content h2 {
+  color: var(--light-text);
+  font-size: 2rem;
+  margin-bottom: var(--spacing-sm);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-content p {
+  color: var(--light-text);
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-md);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================
+ * Button Styles (CTA)
+ * ========================================== */
+.cta-button {
+  background-color: var(--red-accent);
+  color: var(--light-text);
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cta-button:hover {
+  background-color: var(--red-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(211, 47, 47, 0.4);
+}
+
+.cta-button:active {
+  transform: translateY(0);
+}
+
+/* ==========================================
+ * Featured Cars Section
+ * ========================================== */
+.featured-cars {
+  padding: var(--spacing-xl) var(--spacing-sm);
+  background-color: var(--dark-bg);
+}
+
+.featured-cars h2 {
+  text-align: center;
+  color: var(--blue-primary);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ==========================================
+ * Car Grid - Mobile First
+ * ========================================== */
+.car-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+  max-width: 100%;
+}
+
+.car-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.car-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 102, 204, 0.3);
+  border-color: var(--blue-primary);
+}
+
+.car-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: var(--dark-bg);
+}
+
+.car-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: var(--transition);
+}
+
+.car-card:hover .car-image img {
+  transform: scale(1.05);
+}
+
+.car-info {
+  padding: var(--spacing-md);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.car-info h3 {
+  color: var(--light-text);
+  margin-bottom: var(--spacing-xs);
+  font-size: 1.1rem;
+}
+
+.price {
+  color: var(--red-accent);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+}
+
+.learn-more {
+  display: inline-block;
+  background-color: var(--blue-primary);
+  color: var(--light-text);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: var(--transition);
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.learn-more:hover {
+  background-color: var(--blue-dark);
+  color: var(--light-text);
+  text-decoration: none;
+  transform: translateX(2px);
+}
+
+/* ==========================================
+ * Footer Styles
+ * ========================================== */
+footer {
+  background-color: var(--card-bg);
+  border-top: 2px solid var(--blue-primary);
+  padding: var(--spacing-lg) var(--spacing-sm);
+  text-align: center;
+  margin-top: var(--spacing-xl);
+}
+
+.footer-content p {
+  color: var(--light-text);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ==========================================
+ * Responsive Design - Tablet and Larger
+ * Media Query for min-width: 768px
+ * ========================================== */
+@media (min-width: 768px) {
+  /* Header adjustments */
+  header {
+    padding: var(--spacing-lg) var(--spacing-lg);
+  }
+
+  header h1 {
+    font-size: 2.5rem;
+  }
+
+  /* Navigation - Horizontal layout for larger screens */
+  .main-nav ul {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--spacing-lg);
+  }
+
+  .nav-link {
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    background-color: transparent;
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: center;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    background-color: transparent;
+    border-bottom-color: var(--red-accent);
+    border-left: none;
+  }
+
+  /* Hero section adjustments */
+  .hero {
+    min-height: 400px;
+    padding: var(--spacing-xl);
+  }
+
+  .hero-content h2 {
+    font-size: 2.8rem;
+  }
+
+  .hero-content p {
+    font-size: 1.3rem;
+  }
+
+  /* Featured cars grid - 2 columns on tablet */
+  .car-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xl);
+  }
+
+  .car-image {
+    height: 250px;
+  }
+
+  /* Featured cars section adjustments */
+  .featured-cars {
+    padding: var(--spacing-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .featured-cars h2 {
+    font-size: 2rem;
+  }
+
+  /* Main content max width */
+  main {
+    max-width: 100%;
+  }
+
+  /* Footer adjustments */
+  footer {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* ==========================================
+ * Responsive Design - Large Screens
+ * Media Query for min-width: 1024px
+ * ========================================== */
+@media (min-width: 1024px) {
+  /* Car grid - 3 columns on large screens */
+  .car-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .car-image {
+    height: 280px;
+  }
+
+  header {
+    padding: var(--spacing-lg) var(--spacing-xl);
+  }
+
+  .featured-cars {
+    max-width: 1400px;
+  }
+}
+
+/* ==========================================
+ * Accessibility & Responsive Utilities
+ * ========================================== */
+
+/* Ensure no horizontal scrolling on mobile */
+@media (max-width: 767px) {
+  body {
+    width: 100vw;
+    overflow-x: hidden;
+  }
+
+  main {
+    width: 100%;
+  }
+}
+
+/* Focus states for keyboard navigation */
+.nav-link:focus,
+.cta-button:focus,
+.learn-more:focus {
+  outline: 3px solid var(--blue-primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  :root {
+    --dark-bg: #000;
+    --card-bg: #1a1a1a;
+  }
+
+  body {
+    border: 1px solid var(--light-text);
+  }
+}
+
+/* Dark mode already applied - system respects this */
+/* Light mode support for users who prefer light background */
+@media (prefers-color-scheme: light) {
+  /* Keep dark theme consistent as per design requirement */
+  /* This maintains the dark background requirement */
 }
