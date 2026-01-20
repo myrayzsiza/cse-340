@@ -9,6 +9,7 @@ const express = require("express")
 const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
+const inventoryRouter = require("./routes/inventoryRoute")
 
 /* ***********************
  * View Engine Setup
@@ -25,6 +26,13 @@ app.get("/", (req, res) => {
 })
 
 app.use(static)
+// Inventory routes (detail pages, etc.)
+app.use('/inventory', inventoryRouter)
+
+// Route to intentionally trigger a 500 for testing (caught by error middleware)
+app.get('/error/trigger', (req, res, next) => {
+  next(new Error('Intentional 500 triggered from footer link'))
+})
 
 /* ***********************
  * Local Server Information
@@ -38,4 +46,20 @@ const host = process.env.HOST || 'localhost'
  *************************/
 app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`)
+})
+
+/* ***********************
+ * Error Handling
+ *  - 404 handler (render friendly page)
+ *  - 500 handler (global error middleware)
+ *************************/
+// 404 handler
+app.use((req, res) => {
+  res.status(404).render('errors/404', { title: 'Page Not Found' })
+})
+
+// 500 handler
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).render('errors/500', { title: 'Server Error', error: err })
 })

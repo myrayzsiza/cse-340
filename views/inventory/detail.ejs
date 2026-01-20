@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head') %>
+    <title><%= title %> | CSE Motors</title>
+  </head>
+  <body>
+    <%- include('../partials/header') %>
+    <nav class="main-nav"><%- include('../partials/nav') %></nav>
+
+    <main>
+      <section class="vehicle-detail" aria-labelledby="page-title">
+        <h1 id="page-title"><%= title %></h1>
+
+        <!-- Detail HTML from utility (semantic HTML already) -->
+        <div class="vehicle-detail__wrap">
+          <%- detailHtml %>
+        </div>
+      </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+  </body>
+</html>
