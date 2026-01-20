@@ -7,14 +7,12 @@ async function getVehicleDetail(req, res, next) {
     const vehicle = await inventoryModel.getVehicleById(invId)
 
     if (!vehicle) {
-      // Let 404 middleware handle missing vehicles
       return next()
     }
 
-    // Build HTML snippet via utility and render the view
-    const detailHtml = utilities.buildVehicleDetailHTML(vehicle)
-    const pageTitle = `${vehicle.inv_make} ${vehicle.inv_model}`
-    res.render('inventory/detail', { detailHtml, title: pageTitle })
+    // Utility now returns { title, html }
+    const wrapped = utilities.buildVehicleDetailHTML(vehicle)
+    res.render('inventory/detail', { detailHtml: wrapped.html, title: wrapped.title })
   } catch (err) {
     next(err)
   }

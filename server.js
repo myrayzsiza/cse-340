@@ -29,10 +29,9 @@ app.use(static)
 // Inventory routes (detail pages, etc.)
 app.use('/inventory', inventoryRouter)
 
-// Route to intentionally trigger a 500 for testing (caught by error middleware)
-app.get('/error/trigger', (req, res, next) => {
-  next(new Error('Intentional 500 triggered from footer link'))
-})
+// Intentional error route via controller (MVC)
+const errorController = require('./controllers/errorController')
+app.get('/error/trigger', errorController.triggerError)
 
 /* ***********************
  * Local Server Information
