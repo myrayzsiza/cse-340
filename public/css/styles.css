@@ -137,6 +137,35 @@ header h1 {
   transition: var(--transition);
 }
 
+/* Hamburger button */
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--light-text);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+}
+.nav-toggle .hamburger {
+  width: 24px;
+  height: 2px;
+  background: var(--light-text);
+  position: relative;
+}
+.nav-toggle .hamburger::before,
+.nav-toggle .hamburger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 2px;
+  background: var(--light-text);
+}
+.nav-toggle .hamburger::before { top: -7px; }
+.nav-toggle .hamburger::after { top: 7px; }
+
 .nav-link:hover,
 .nav-link.active {
   background-color: var(--blue-primary);
@@ -563,4 +592,18 @@ footer {
 @media (prefers-color-scheme: light) {
   /* Keep dark theme consistent as per design requirement */
   /* This maintains the dark background requirement */
+}
+
+/* Mobile: hide nav by default, show when active */
+#main-navigation {
+  display: none;
+}
+#main-navigation.show {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  /* show nav and hide toggle on larger screens */
+  #main-navigation { display: block !important; }
+  .nav-toggle { display: none; }
 }
