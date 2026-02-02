@@ -33,6 +33,10 @@ app.get("/contact", (req, res) => {
   res.render("contact")
 })
 
+app.get("/test", (req, res) => {
+  res.send("Server is running!");
+});
+
 app.use(static)
 // Inventory routes (detail pages, etc.)
 app.use('/inventory', inventoryRouter)
