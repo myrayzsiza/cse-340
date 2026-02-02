@@ -8,7 +8,6 @@
 const express = require("express")
 const env = require("dotenv").config()
 const app = express()
-const static = require("./routes/static")
 const inventoryRouter = require("./routes/inventoryRoute")
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -54,7 +53,6 @@ app.get("/test", (req, res) => {
   res.send("Server is running!");
 });
 
-app.use(static)
 // Inventory routes (detail pages, etc.)
 app.use('/inventory', inventoryRouter)
 
