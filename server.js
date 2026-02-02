@@ -49,15 +49,15 @@ app.get('/error/trigger', errorController.triggerError)
  * Local Server Information
  * Values from .env (environment) file
  *************************/
-const port = process.env.PORT || 5500
-const host = process.env.HOST || 'localhost'
+const port = process.env.PORT || 5500;
+const host = process.env.HOST || 'localhost';
 
 /* ***********************
  * Log statement to confirm server operation
  *************************/
 app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`)
-})
+  console.log(`app listening on ${host}:${port}`);
+});
 
 /* ***********************
  * Error Handling

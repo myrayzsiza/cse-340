@@ -1,9 +1,11 @@
 const { Pool } = require('pg')
 
 // Pool configuration: prefer DATABASE_URL, fallback to individual env vars
+const isProduction = process.env.NODE_ENV === 'production';
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-})
+  ssl: isProduction ? { rejectUnauthorized: false } : false
+});
 
 /**
  * Fetch a single vehicle by id using a prepared statement
