@@ -86,6 +86,7 @@ async function addInventory(req, res) {
 }
 
 module.exports = {
+  getVehicleDetail,
   buildManagementView,
   buildAddClassification,
   addClassification,
