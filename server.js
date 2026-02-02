@@ -10,12 +10,24 @@ const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
 const inventoryRouter = require("./routes/inventoryRoute")
+const session = require('express-session');
+const flash = require('connect-flash');
 
 /* ***********************
  * View Engine Setup
  *************************/
 app.set("view engine", "ejs")
 app.set("views", "./views")
+
+/* ***********************
+ * Session and Flash Middleware
+ *************************/
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'supersecret',
+  resave: false,
+  saveUninitialized: true
+}));
+app.use(flash());
 
 /* ***********************
  * Routes
