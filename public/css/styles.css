@@ -1,4 +1,15 @@
 /* ==========================================
+ * Simple Fade-in Animation for Main Content
+ * ========================================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+main {
+  animation: fadeIn 0.8s var(--transition) both;
+}
+/* ==========================================
  * CSE Motors - Professional Styles
  * Mobile-First Responsive Design
  * ========================================== */
