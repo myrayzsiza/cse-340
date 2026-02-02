@@ -368,6 +368,46 @@ footer {
 }
 
 /* ==========================================
+ * Inventory Table Styles
+ * ========================================== */
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  background: var(--card-bg);
+  color: var(--light-text);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.inventory-table th, .inventory-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+}
+.inventory-table th {
+  background: var(--blue-primary);
+  color: var(--light-text);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.inventory-table tr:last-child td {
+  border-bottom: none;
+}
+.inventory-table tr:hover {
+  background: var(--blue-dark);
+  color: var(--light-text);
+  transition: background 0.2s;
+}
+
+@media (max-width: 600px) {
+  .inventory-table th, .inventory-table td {
+    padding: 0.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* ==========================================
  * Responsive Design - Tablet and Larger
  * Media Query for min-width: 768px
  * ========================================== */
