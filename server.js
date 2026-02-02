@@ -30,6 +30,11 @@ app.use(session({
 app.use(flash());
 
 /* ***********************
+ * Serve static files from public directory
+ *************************/
+app.use(express.static('public'));
+
+/* ***********************
  * Routes
  *************************/
 // Index route
