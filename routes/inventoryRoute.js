@@ -8,6 +8,7 @@ const { inventoryRules, checkInventoryData } = require('../middleware/inventoryV
 router.get('/detail/:invId', invController.getVehicleDetail)
 
 // Management view
+router.get('/', invController.buildManagementView)
 router.get('/inv', invController.buildManagementView)
 
 // Classification routes
