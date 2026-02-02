@@ -34,9 +34,11 @@ const Util = require('../utilities/')
 
 // Management view
 async function buildManagementView(req, res) {
+  const inventory = await invModel.getAllVehicles();
   res.render('inventory/management', {
     title: 'Inventory Management',
-    flashMessage: req.flash('notice')
+    flashMessage: req.flash('notice'),
+    inventory
   })
 }
 
