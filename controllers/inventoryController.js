@@ -1,97 +1,50 @@
-const inventoryModel = require('../models/inventoryModel')
-const utilities = require('../utilities')
+const invModel = require("../models/inventory-model")
+const utilities = require("../utilities/")
 
-async function getVehicleDetail(req, res, next) {
-  try {
-    const invId = req.params.invId
-    const vehicle = await inventoryModel.getVehicleById(invId)
+const invCont = {}
 
-    if (!vehicle) {
-      return next()
-    }
-
-    // Utility now returns { title, html }
-    const wrapped = utilities.buildVehicleDetailHTML(vehicle)
-    res.render('inventory/detail', { detailHtml: wrapped.html, title: wrapped.title })
-  } catch (err) {
-    next(err)
-  }
-}
-
-module.exports = {
-  getVehicleDetail,
-}
-
-async function buildManagementView(req, res) {
-  res.render('inventory/management', {
-    title: 'Inventory Management',
-    flashMessage: req.flash('notice')
+/* ***************************
+ *  Build inventory by classification view
+ * ************************** */
+invCont.buildByClassificationId = async function (req, res, next) {
+  const classification_id = req.params.classificationId
+  const data = await invModel.getInventoryByClassificationId(classification_id)
+  const grid = await utilities.buildClassificationGrid(data)
+  let nav = await utilities.getNav()
+  const className = data[0].classification_name
+  res.render("./inventory/classification", {
+    title: className + " vehicles",
+    nav,
+    grid,
   })
 }
 
-const invModel = require('../models/inventoryModel')
-const Util = require('../utilities/')
-
-// Management view
-async function buildManagementView(req, res) {
-  const inventory = await invModel.getAllVehicles();
-  res.render('inventory/management', {
-    title: 'Inventory Management',
-    flashMessage: req.flash('notice'),
-    inventory
+/* ***************************
+ *  Build vehicle detail view
+ *  Assignment 3, Task 1
+ * ************************** */
+invCont.buildDetail = async function (req, res, next) {
+  const invId = req.params.id
+  let vehicle = await invModel.getInventoryById(invId)
+  const htmlData = await utilities.buildSingleVehicleDisplay(vehicle)
+  let nav = await utilities.getNav()
+  const vehicleTitle =
+    vehicle.inv_year + " " + vehicle.inv_make + " " + vehicle.inv_model
+  res.render("./inventory/detail", {
+    title: vehicleTitle,
+    nav,
+    message: null,
+    htmlData,
   })
 }
 
-// Classification
-async function buildAddClassification(req, res) {
-  res.render('inventory/add-classification', { errors: null })
+/* ****************************************
+ *  Process intentional error
+ *  Assignment 3, Task 3
+ * ************************************ */
+invCont.throwError = async function (req, res) {
+  throw new Error("I am an intentional error")
 }
 
-async function addClassification(req, res) {
-  const { classification_name } = req.body
-  const result = await invModel.addClassification(classification_name)
 
-  if (result) {
-    req.flash('notice', 'Classification added successfully!')
-    res.redirect('/inv')
-  } else {
-    req.flash('notice', 'Failed to add classification.')
-    res.render('inventory/add-classification', { errors: null })
-  }
-}
-
-// Inventory
-async function buildAddInventory(req, res) {
-  const classificationSelect = await Util.buildClassificationList()
-  res.render('inventory/add-inventory', {
-    errors: null,
-    classificationSelect
-  })
-}
-
-async function addInventory(req, res) {
-  const { inv_make, inv_model, classification_id } = req.body
-  const result = await invModel.addInventory(inv_make, inv_model, classification_id)
-
-  if (result) {
-    req.flash('notice', 'Inventory item added successfully!')
-    res.redirect('/inv')
-  } else {
-    req.flash('notice', 'Failed to add inventory item.')
-    const classificationSelect = await Util.buildClassificationList(classification_id)
-    res.render('inventory/add-inventory', {
-      errors: null,
-      ...req.body,
-      classificationSelect
-    })
-  }
-}
-
-module.exports = {
-  getVehicleDetail,
-  buildManagementView,
-  buildAddClassification,
-  addClassification,
-  buildAddInventory,
-  addInventory
-}
+module.exports = invCont
