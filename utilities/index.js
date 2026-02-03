@@ -61,7 +61,7 @@ module.exports = {
   buildVehicleDetailHTML,
 }
 
-const invModel = require('../models/inventoryModel')
+const invModel = require('../models/inventory-model')
 
 async function buildClassificationList(classification_id = null) {
   let data = await invModel.getClassifications()
