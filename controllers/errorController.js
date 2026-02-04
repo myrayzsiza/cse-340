@@ -29,7 +29,6 @@ errorController.triggerError = (req, res, next) => {
   next(new Error("This is an intentional test error"))
 }
 
-module.exports = errorController
 
 
 module.exports = errorController
