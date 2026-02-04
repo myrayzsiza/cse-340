@@ -1,30 +1,26 @@
-const express = require('express');
-const router = express.Router();
-const invController = require('../controllers/inventoryController');
-const { classificationRules, checkClassificationData } = require('../middleware/classificationValidation');
-const { inventoryRules, checkInventoryData } = require('../middleware/inventoryValidation');
+// Needed Resources 
+const express = require("express")
+const router = new express.Router() 
+const invController = require("../controllers/invController")
+const utilities = require("../utilities")
 
-// Detail view: /inventory/detail/:invId
-router.get('/detail/:invId', invController.getVehicleDetail);
+router.get("/type/:classificationId", invController.buildByClassificationId);
 
-// Management view
-router.get('/', invController.buildManagementView);
-router.get('/inv', invController.buildManagementView);
 
-// Classification routes
-router.get('/inv/add-classification', invController.buildAddClassification);
-router.post('/inv/add-classification',
-  classificationRules(),
-  checkClassificationData,
-  invController.addClassification
-);
+/* ****************************************
+ * Route to build vehicle detail view
+ **************************************** */
+router.get("/detail/:id", 
+utilities.handleErrors(invController.buildDetail))
 
-// Inventory routes
-router.get('/inv/add-inventory', invController.buildAddInventory);
-router.post('/inv/add-inventory',
-  inventoryRules(),
-  checkInventoryData,
-  invController.addInventory
-);
+/* ****************************************
+ * Error Route
+ * Assignment 3, Task 3
+ **************************************** */
+router.get(
+  "/broken",
+  utilities.handleErrors(invController.throwError)
+)
+
 
 module.exports = router;
