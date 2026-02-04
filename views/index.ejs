@@ -6,253 +6,59 @@
 <body>
   <%- include('partials/header') %>
   <%- include('partials/nav') %>
-  
+
   <main>
     <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-content">
-        <h2>Welcome to CSE Motors</h2>
-        <p>Find your perfect vehicle with us</p>
-        <button class="cta-button">Shop Vehicles</button>
-      </div>
+    <section id="hero">
+      <h1>Welcome to CSE Motors!</h1>
+      <ul>
+        <li><h2>DMC DeLorean</h2></li>
+        <li>3 Cup holders</li>
+        <li>Supreme doors</li>
+        <li>Fuzzy dice!</li>
+        <li><button id="actionbtn">Own Today</button></li>
+      </ul>
+      <img src="/images/vehicles/delorean.jpg" alt="DMC DeLorean">
     </section>
 
-    <!-- Featured Cars Section -->
-    <section class="featured-cars">
-      <h2>Featured Vehicles</h2>
-      <div class="car-grid">
-        <!-- Car 1 -->
-        <article class="car-card">
-          <div class="car-image">
-            <img src="/images/vehicles/camaro.jpg" alt="Camaro" loading="lazy">
-          </div>
-          <div class="car-info">
-            <h3>Camaro</h3>
-            <p class="price">$24,999</p>
-            <button class="learn-more" onclick="showDetails('Camaro', 'The Camaro is a fast and fun sports car. It has a powerful engine and looks cool. Many people love driving it because it is exciting and goes very fast. It is great for people who like speed and adventure!')">View Details</button>
-          </div>
-        </article>
+    <!-- Reviews -->
+    <section id="review">
+      <h2>DMC DeLorean Reviews</h2>
+      <ul>
+        <li>"So fast it's almost like traveling in time." (4/5)</li>
+        <li>"Coolest ride on the road." (4/5)</li>
+        <li>"I'm feeling McFly!" (5/5)</li>
+        <li>"The most futuristic ride of our day." (4.5/5)</li>
+        <li>"80's livin and I love it!" (5/5)</li>
+      </ul>
+    </section>
 
-        <!-- Car 2 -->
-        <article class="car-card">
-          <div class="car-image">
-            <img src="/images/vehicles/escalade.jpg" alt="Escalade" loading="lazy">
-          </div>
-          <div class="car-info">
-            <h3>Escalade</h3>
-            <p class="price">$34,999</p>
-            <button class="learn-more" onclick="showDetails('Escalade', 'The Escalade is a big and tall car. It is very big inside and can fit many people. It is perfect for families who need a lot of space. It is strong and safe for everyone inside!')">View Details</button>
-          </div>
-        </article>
-
-        <!-- Car 3 -->
-        <article class="car-card">
-          <div class="car-image">
-            <img src="/images/vehicles/monster-truck.jpg" alt="Monster Truck" loading="lazy">
-          </div>
-          <div class="car-info">
-            <h3>Monster Truck</h3>
-            <p class="price">$39,999</p>
-            <button class="learn-more" onclick="showDetails('Monster Truck', 'The Monster Truck is super big and has huge wheels! It is very strong and can go over bumpy ground. Kids love Monster Trucks because they are fun and amazing. It can do cool tricks!')">View Details</button>
-          </div>
-        </article>
-
-        <!-- Car 4 -->
-        <article class="car-card">
-          <div class="car-image">
-            <img src="/images/vehicles/delorean.jpg" alt="DeLorean" loading="lazy">
-          </div>
-          <div class="car-info">
-            <h3>DeLorean</h3>
-            <p class="price">$29,999</p>
-            <button class="learn-more" onclick="showDetails('DeLorean', 'The DeLorean is a special car from the 1980s. It looks like a spaceship with silver doors that open up. Many people know it from movies. It is a cool car that everyone thinks is special!')">View Details</button>
-          </div>
-        </article>
-
-        <!-- Car 5 -->
-        <article class="car-card">
-          <div class="car-image">
-            <img src="/images/vehicles/adventador.jpg" alt="Adventador" loading="lazy">
-          </div>
-          <div class="car-info">
-            <h3>Adventador</h3>
-            <p class="price">$26,999</p>
-            <button class="learn-more" onclick="showDetails('Adventador', 'The Adventador is a fancy and fast sports car. It looks amazing and has a loud, powerful engine. People think it is beautiful. It is very fast and makes everyone smile when they see it!')">View Details</button>
-          </div>
-        </article>
-
-        <!-- Car 6 -->
-        <article class="car-card">
-          <div class="car-image">
-            <img src="/images/vehicles/mystery-van.jpg" alt="Mystery Van" loading="lazy">
-          </div>
-          <div class="car-info">
-            <h3>Mystery Van</h3>
-            <p class="price">$31,999</p>
-            <button class="learn-more" onclick="showDetails('Mystery Van', 'The Mystery Van is a cool van that looks mysterious and fun! It is perfect for adventures and road trips. Friends can ride together and have fun. It makes every trip feel like an adventure!')">View Details</button>
-          </div>
-        </article>
+    <!-- Upgrades -->
+    <section id="add-ons">
+      <h2>DeLorean Upgrades</h2>
+      <div class="flex">
+        <figure>
+          <img src="/images/upgrades/flux-cap.png" alt="Flux Capacitor">
+          <figcaption>Flux Capacitor</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/upgrades/flame.jpg" alt="Flame Decals">
+          <figcaption>Flame Decals</figcaption>
+        </figure>
+      </div>
+      <div class="flex">
+        <figure>
+          <img src="/images/upgrades/bumper_sticker.jpg" alt="Bumper Stickers">
+          <figcaption>Bumper Stickers</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/upgrades/hub-cap.jpg" alt="Hub Caps">
+          <figcaption>Hub Caps</figcaption>
+        </figure>
       </div>
     </section>
   </main>
 
   <%- include('partials/footer') %>
-
-  <!-- Details Modal -->
-  <div id="detailsModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <span class="close" onclick="closeDetails()">&times;</span>
-      <h2 id="modalTitle"></h2>
-      <p id="modalDescription"></p>
-      <button onclick="closeDetails()" class="close-button">Close</button>
-    </div>
-  </div>
-
-  <script>
-    function showDetails(carName, description) {
-      document.getElementById('modalTitle').textContent = carName;
-      document.getElementById('modalDescription').textContent = description;
-      document.getElementById('detailsModal').style.display = 'block';
-    }
-
-    function closeDetails() {
-      document.getElementById('detailsModal').style.display = 'none';
-    }
-
-    // Close modal when clicking outside of it
-    window.onclick = function(event) {
-      const modal = document.getElementById('detailsModal');
-      if (event.target === modal) {
-        modal.style.display = 'none';
-      }
-    }
-  </script>
-
-  <style>
-    .modal {
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-content {
-      background-color: #fefefe;
-      margin: 10% auto;
-      padding: 30px;
-      border: 1px solid #888;
-      border-radius: 10px;
-      width: 80%;
-      max-width: 500px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      color: black;
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: #000;
-    }
-
-    .close-button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 15px;
-    }
-
-    .close-button:hover {
-      background-color: #45a049;
-    }
-
-    #modalTitle {
-      color: black;
-    }
-
-    #modalDescription {
-      color: black;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-  </style>
-
-  <%# Unit 1, Assignment 1 %>
-<h1>Welcome to CSE Motors!</h1>
-<%# Unit 4, Sessions & Messages activity %>
-<%- messages() %>
-
-<section id="hero">
-
-  <ul>
-    <li>
-      <h2>DMC Delorean</h2>
-    </li>
-    <li>3 Cup holders</li>
-    <li>Superman doors</li>
-    <li>Fuzzy dice!</li>
-    <li><button id="actionbtn">Own Today</button></li>
-  </ul>
-
-</section>
-<div class="flex-content">
-  <section id="review">
-    <h2>DMC Delorean Reviews</h2>
-    <ul>
-      <li>"So fast it's almost like traveling in time." (4/5)</li>
-      <li>"Coolest ride on the road." (4/5)</li>
-      <li>"I'm feeling McFly!" (5/5)</li>
-      <li>"The most futuristic ride of our day." (4.5/5)</li>
-      <li>"80's livin and I love it!" (5/5)</li>
-    </ul>
-  </section>
-  <section id="add-ons">
-    <h2>Delorean Upgrades</h2>
-    <div class="flex">
-      <a href="#" title="flux-capacitor">
-        <figure>
-
-          <div class="add-col"><img src="./images/upgrades/flux-cap.png" alt="Flux-Capacitor"></div>
-          <figcaption>Flux Capacitor</figcaption>
-        </figure>
-      </a>
-      <a href="#" title="flame decals">
-        <figure>
-          <div class="add-col"><img src="./images/upgrades/flame.jpg" alt="flame decal"></div>
-          <figcaption>Flame Decals</figcaption>
-        </figure>
-      </a>
-
-    </div>
-    <div class="flex">
-      <a href="#" title="bumper stickers">
-        <figure>
-          <div class="add-col"><img src="./images/upgrades/bumper_sticker.jpg" alt="Bumper Stickers"> </div>
-          <figcaption>Bumper Stickers</figcaption>
-        </figure>
-      </a>
-      <a href="#" title="hub caps">
-        <figure>
-          <div class="add-col"><img src="./images/upgrades/hub-cap.jpg" alt="Hub Caps"></div>
-          <figcaption>Hub Caps</figcaption>
-        </figure>
-      </a>
-
-    </div>
-  </section>
-
-</div>
 </body>
 </html>
