@@ -19,4 +19,17 @@ errorController.handle500 = (err, req, res, next) => {
   })
 }
 
+// src/controllers/errorController.js
+
+const errorController = {}
+
+// This matches the route in server.js
+errorController.triggerError = (req, res, next) => {
+  // Intentionally throw an error to test your 500 handler
+  next(new Error("This is an intentional test error"))
+}
+
+module.exports = errorController
+
+
 module.exports = errorController
