@@ -139,6 +139,13 @@ nav a {
 body {
   font-family: var(--body-font), sans-serif;
   margin: 0;
+  background-image:
+    linear-gradient(45deg, #000 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #000 75%),
+    linear-gradient(45deg, transparent 75%, #000 75%),
+    linear-gradient(45deg, #000 25%, #fff 25%);
+  background-size: 100px 100px;
+  background-position: 0 0, 0 0, -50px -50px, 50px 50px;
 }
 
 #wrapper {
@@ -169,6 +176,7 @@ footer p {
   margin: 0;
   padding: 0;
   font-size: .9rem;
+  text-align: center;
 }
 
 hr {
@@ -429,16 +437,6 @@ input[name$='Thumbnail'] {
 }
 
 @media only screen and (min-width: 768px) {
-  body {
-    background-image:
-      linear-gradient(45deg, #000 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, #000 75%),
-      linear-gradient(45deg, transparent 75%, #000 75%),
-      linear-gradient(45deg, #000 25%, #fff 25%);
-    background-size: 100px 100px;
-    background-position: 0 0, 0 0, -50px -50px, 50px 50px;
-  }
-
   #wrapper {
     border: 5px solid var(--main-accent);
     border-radius: 10px;
@@ -583,5 +581,3 @@ input[name$='Thumbnail'] {
     object-fit: contain;
   }
 }
-
-ssssssssssssssssss

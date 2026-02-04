@@ -4,61 +4,63 @@
   <%- include('partials/head') %>
 </head>
 <body>
-  <%- include('partials/header') %>
-  <%- include('partials/nav') %>
+  <div id="wrapper">
+    <%- include('partials/header') %>
+    <%- include('partials/nav') %>
 
-  <main>
-    <!-- Hero Section -->
-    <section id="hero">
-      <h1>Welcome to CSE Motors!</h1>
-      <ul>
-        <li><h2>DMC DeLorean</h2></li>
-        <li>3 Cup holders</li>
-        <li>Supreme doors</li>
-        <li>Fuzzy dice!</li>
-        <li><button id="actionbtn">Own Today</button></li>
-      </ul>
-      <img src="/images/vehicles/delorean.jpg" alt="DMC DeLorean">
-    </section>
+    <main>
+      <!-- Hero Section -->
+      <section id="hero">
+        <h1>Welcome to CSE Motors!</h1>
+        <ul>
+          <li><h2>DMC DeLorean</h2></li>
+          <li>3 Cup holders</li>
+          <li>Supreme doors</li>
+          <li>Fuzzy dice!</li>
+          <li><button id="actionbtn">Own Today</button></li>
+        </ul>
+        <img src="/images/vehicles/delorean.jpg" alt="DMC DeLorean">
+      </section>
 
-    <!-- Reviews -->
-    <section id="review">
-      <h2>DMC DeLorean Reviews</h2>
-      <ul>
-        <li>"So fast it's almost like traveling in time." (4/5)</li>
-        <li>"Coolest ride on the road." (4/5)</li>
-        <li>"I'm feeling McFly!" (5/5)</li>
-        <li>"The most futuristic ride of our day." (4.5/5)</li>
-        <li>"80's livin and I love it!" (5/5)</li>
-      </ul>
-    </section>
+      <!-- Reviews -->
+      <section id="review">
+        <h2>DMC DeLorean Reviews</h2>
+        <ul>
+          <li>"So fast it's almost like traveling in time." (4/5)</li>
+          <li>"Coolest ride on the road." (4/5)</li>
+          <li>"I'm feeling McFly!" (5/5)</li>
+          <li>"The most futuristic ride of our day." (4.5/5)</li>
+          <li>"80's livin and I love it!" (5/5)</li>
+        </ul>
+      </section>
 
-    <!-- Upgrades -->
-    <section id="add-ons">
-      <h2>DeLorean Upgrades</h2>
-      <div class="flex">
-        <figure>
-          <img src="/images/upgrades/flux-cap.png" alt="Flux Capacitor">
-          <figcaption>Flux Capacitor</figcaption>
-        </figure>
-        <figure>
-          <img src="/images/upgrades/flame.jpg" alt="Flame Decals">
-          <figcaption>Flame Decals</figcaption>
-        </figure>
-      </div>
-      <div class="flex">
-        <figure>
-          <img src="/images/upgrades/bumper_sticker.jpg" alt="Bumper Stickers">
-          <figcaption>Bumper Stickers</figcaption>
-        </figure>
-        <figure>
-          <img src="/images/upgrades/hub-cap.jpg" alt="Hub Caps">
-          <figcaption>Hub Caps</figcaption>
-        </figure>
-      </div>
-    </section>
-  </main>
+      <!-- Upgrades -->
+      <section id="add-ons">
+        <h2>DeLorean Upgrades</h2>
+        <div class="flex">
+          <figure>
+            <img src="/images/upgrades/flux-cap.png" alt="Flux Capacitor">
+            <figcaption>Flux Capacitor</figcaption>
+          </figure>
+          <figure>
+            <img src="/images/upgrades/flame.jpg" alt="Flame Decals">
+            <figcaption>Flame Decals</figcaption>
+          </figure>
+        </div>
+        <div class="flex">
+          <figure>
+            <img src="/images/upgrades/bumper_sticker.jpg" alt="Bumper Stickers">
+            <figcaption>Bumper Stickers</figcaption>
+          </figure>
+          <figure>
+            <img src="/images/upgrades/hub-cap.jpg" alt="Hub Caps">
+            <figcaption>Hub Caps</figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
 
-  <%- include('partials/footer') %>
+    <%- include('partials/footer') %>
+  </div>
 </body>
 </html>
