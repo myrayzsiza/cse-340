@@ -14,7 +14,7 @@ function buildVehicleDetailHTML(v) {
   const title = `${v.inv_make} ${v.inv_model}`
   const price = formatPrice(v.inv_price)
   const mileage = formatMileage(v.inv_miles)
-  const imageUrl = v.inv_image || "/images/vehicles/default-vehicle.png"
+  const imageUrl = v.inv_image || "/images/vehicles/no-image.png"
 
   const html = `
     <article class="vehicle-detail__card" aria-labelledby="vehicle-title">
@@ -85,11 +85,11 @@ Util.buildClassificationGrid = async function (data) {
     grid = '<ul id="inv-display">'
     data.forEach((vehicle) => {
       grid += '<li>'
-      grid += '<a href="../../inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + " " + vehicle.inv_model + ' details"><img src="' + vehicle.inv_thumbnail + '" alt="Image of ' + vehicle.inv_make + " " + vehicle.inv_model + ' on CSE Motors" /></a>'
+      grid += '<a href="/inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + " " + vehicle.inv_model + ' details"><img src="' + vehicle.inv_thumbnail + '" alt="Image of ' + vehicle.inv_make + " " + vehicle.inv_model + ' on CSE Motors" /></a>'
       grid += '<div class="namePrice">'
       grid += "<hr />"
       grid += "<h2>"
-      grid += '<a href="../../inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + " " + vehicle.inv_model + ' details">' + vehicle.inv_make + " " + vehicle.inv_model + "</a>"
+      grid += '<a href="/inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + " " + vehicle.inv_model + ' details">' + vehicle.inv_make + " " + vehicle.inv_model + "</a>"
       grid += "</h2>"
       grid += "<span>$" + new Intl.NumberFormat("en-US").format(vehicle.inv_price) + "</span>"
       grid += "</div>"
