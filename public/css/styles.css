@@ -233,6 +233,45 @@ hr {
   opacity: .5;
 }
 
+/* Navigation hover effects */
+nav a:hover {
+  background-color: var(--main-accent);
+  color: var(--primary-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Header link hover effects */
+header a:hover {
+  color: var(--main-accent);
+  transition: color 0.3s ease;
+}
+
+/* General link hover effects */
+a:hover {
+  text-decoration: underline;
+  transition: text-decoration 0.3s ease;
+}
+
+/* Form submit button hover effects */
+input[type="submit"]:hover {
+  background-color: var(--primary-text);
+  color: var(--primary-background);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Table row hover effects for inventory tables */
+.inventory-table tr:hover {
+  background-color: rgba(1, 176, 211, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+/* Flex container link hover effects */
+.flex a:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
 section ul {
   padding: 0 0 0 1rem;
 }
