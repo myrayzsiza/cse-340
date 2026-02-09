@@ -29,7 +29,8 @@ app.set("layout", "./layouts/layout") // not at views root
  * Middleware
  * ************************/
 
-
+// Serve static files from the public directory (for images, css, js, etc.)
+app.use(express.static("public"));
 
 /* ***********************
  * Routes

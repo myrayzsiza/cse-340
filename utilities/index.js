@@ -1,3 +1,49 @@
+const invModel = require("../models/inventory-model")
+
+/* ***********************
+ * Image Path Utilities
+ * ***********************/
+
+/**
+ * Normalize image path for serving from Express static.
+ * Ensures paths always:
+ * - Start with /
+ * - Include /images/vehicles/ directory
+ * - Fall back to no-image placeholder if invalid
+ * @param {string} imagePath - The raw image path from database
+ * @param {boolean} isThumbnail - Whether this is a thumbnail (uses no-image-tn.png)
+ * @returns {string} - Normalized path with leading /
+ */
+function normalizeImagePath(imagePath, isThumbnail = false) {
+  const defaultImage = isThumbnail ? "/images/vehicles/no-image-tn.png" : "/images/vehicles/no-image.png"
+  
+  if (!imagePath) {
+    return defaultImage;
+  }
+  
+  // Convert to string and trim
+  let path = String(imagePath).trim();
+  
+  // Already has /images/vehicles/, just ensure leading slash
+  if (path.includes("/images/vehicles/")) {
+    return path.startsWith("/") ? path : "/" + path;
+  }
+  
+  // Has /images/ but not /vehicles/, fix it
+  if (path.includes("/images/")) {
+    path = path.replace(/\/images\//, "/images/vehicles/");
+    return path.startsWith("/") ? path : "/" + path;
+  }
+  
+  // Just a filename, build full path
+  if (!path.includes("/")) {
+    return `/images/vehicles/${path}`;
+  }
+  
+  // Fallback for malformed paths
+  return defaultImage;
+}
+
 // Build classification select list for forms
 async function buildClassificationList(selectedId = null) {
   let data = await invModel.getClassifications();
@@ -9,8 +55,6 @@ async function buildClassificationList(selectedId = null) {
   classificationList += "</select>";
   return classificationList;
 }
-
-const invModel = require("../models/inventory-model")
 
 function formatPrice(value) {
   const num = Number(value) || 0
@@ -26,12 +70,13 @@ function buildVehicleDetailHTML(v) {
   const title = `${v.inv_make} ${v.inv_model}`
   const price = formatPrice(v.inv_price)
   const mileage = formatMileage(v.inv_miles)
-  const imageUrl = v.inv_image || "/images/vehicles/no-image.png"
+  // Normalize image path with fallback logic
+  const imageUrl = normalizeImagePath(v.inv_image, false)
 
   const html = `
     <article class="vehicle-detail__card" aria-labelledby="vehicle-title">
       <figure class="vehicle-detail__media">
-        <img src="${imageUrl}" alt="${v.inv_make} ${v.inv_model} full-size image" loading="lazy" />
+        <img src="${imageUrl}" alt="${v.inv_make} ${v.inv_model} full-size image" loading="lazy" onerror="this.onerror=null;this.src='/images/vehicles/no-image.png';" />
         <figcaption>Full-size image of ${v.inv_make} ${v.inv_model}</figcaption>
       </figure>
       <section class="vehicle-detail__info">
@@ -97,15 +142,9 @@ Util.buildClassificationGrid = async function (data) {
     grid = '<ul id="inv-display">'
     data.forEach((vehicle) => {
       grid += '<li>'
-      let thumb = vehicle.inv_thumbnail;
-      if (thumb) {
-        // Remove any leading /images/ or images/ and any leading slashes
-        thumb = thumb.replace(/^\/?images\//, '').replace(/^\//, '');
-        // Always use /images/vehicles/
-        thumb = '/images/vehicles/' + thumb;
-      }
-      // Add fallback image if not found
-      grid += `<a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details"><img src="${thumb}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model} on CSE Motors" onerror="this.onerror=null;this.src='/images/vehicles/no-image-tn.png';" /></a>`
+      // Use normalization function for thumbnail with fallback
+      let thumb = normalizeImagePath(vehicle.inv_thumbnail, true)
+      grid += `<a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details"><img src="${thumb}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model} on CSE Motors" loading="lazy" onerror="this.onerror=null;this.src='/images/vehicles/no-image-tn.png';" /></a>`
       grid += '<div class="namePrice">'
       grid += "<hr />"
       grid += "<h2>"
@@ -127,10 +166,12 @@ Util.buildSingleVehicleDisplay = async (vehicle) => {
   if (!vehicle) return '<div>Vehicle not found.</div>';
   const price = Number(vehicle.inv_price).toLocaleString("en-US", { style: "currency", currency: "USD" });
   const miles = Number(vehicle.inv_miles).toLocaleString("en-US");
+  // Normalize image path with fallback
+  const imageUrl = normalizeImagePath(vehicle.inv_image, false);
   return `
     <div class="vehicle-detail-container">
       <div class="vehicle-image">
-        <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}" />
+        <img src="${imageUrl}" alt="${vehicle.inv_make} ${vehicle.inv_model}" loading="lazy" onerror="this.onerror=null;this.src='/images/vehicles/no-image.png';" />
       </div>
       <div class="vehicle-info">
         <h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
@@ -182,6 +223,7 @@ Util.buildSingleVehicleDisplay = async (vehicle) => {
 Util.handleErrors = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
 module.exports = {
+  normalizeImagePath,
   buildVehicleDetailHTML,
   buildClassificationList,
   ...Util
