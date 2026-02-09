@@ -1,22 +1,50 @@
-<h1>Add Classification</h1>
+<% layout('layouts/layout') %>
 
-<% if (errors) { errors.forEach(e => { %>
-  <p style="color:red"><%= e.msg %></p>
-<% }) } %>
+<h1><%= title %></h1>
 
-<form action="/inv/add-classification" method="post">
-  <label for="classification_name">Classification Name:</label>
-  <input type="text" id="classification_name" name="classification_name"
-         required pattern="^[A-Za-z0-9]+$">
-  <button type="submit">Add</button>
+<% if (errors && errors.length > 0) { %>
+  <div style="color: #d32f2f; border: 1px solid #d32f2f; padding: 12px; margin-bottom: 20px; border-radius: 4px;">
+    <strong>Please correct the following errors:</strong>
+    <ul>
+      <% errors.forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<form action="/inv/add-classification" method="post" style="max-width: 500px; margin-top: 20px;">
+  <div style="margin-bottom: 15px;">
+    <label for="classification_name" style="display: block; margin-bottom: 5px; font-weight: bold;">
+      Classification Name <span style="color: red;">*</span>
+    </label>
+    <input 
+      type="text" 
+      id="classification_name" 
+      name="classification_name"
+      required
+      pattern="^[A-Za-z0-9]+$"
+      title="Only letters and numbers allowed (no spaces or special characters)"
+      placeholder="e.g., SportsCars"
+      style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+    />
+    <small style="display: block; margin-top: 5px; color: #666;">
+      Letters and numbers only. No spaces or special characters.
+    </small>
+  </div>
+
+  <div style="display: flex; gap: 10px; margin-top: 20px;">
+    <button 
+      type="submit"
+      style="padding: 10px 20px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;"
+    >
+      Add Classification
+    </button>
+    <a 
+      href="/inv/"
+      style="padding: 10px 20px; background-color: #666; color: white; text-decoration: none; border-radius: 4px; display: inline-block; text-align: center;"
+    >
+      Cancel
+    </a>
+  </div>
 </form>
-<%# Unit 3, Build Classification View activity %>
-<% if (title) { %>
-<h1><%= title %> </h1>
-<% } else {
-  res.redirect('/')
-} %>
-
-<%# messages() %>
-
-<%- grid %>

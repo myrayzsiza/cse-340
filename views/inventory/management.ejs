@@ -1,9 +1,28 @@
 <% layout('layouts/layout') %>
+
 <h1>Inventory Management</h1>
+
 <% if (flashMessage && flashMessage.length) { %>
-  <div class="message success"><%= flashMessage %></div>
+  <div class="notice" style="color: green; border: 1px solid green; padding: 12px; margin-bottom: 20px;">
+    <%= flashMessage %>
+  </div>
 <% } %>
-<ul>
-  <li><a href="/inv/add-classification">Add New Classification</a></li>
-  <li><a href="/inv/add-inventory">Add New Inventory Item</a></li>
-</ul>
+
+<h2>Inventory Management Dashboard</h2>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+  <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+    <h3>Classifications</h3>
+    <p>Manage vehicle classifications (categories)</p>
+    <a href="/inv/add-classification" style="display: inline-block; background-color: #0066cc; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 10px;">
+      + Add New Classification
+    </a>
+  </div>
+
+  <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+    <h3>Inventory Items</h3>
+    <p>Manage vehicle inventory</p>
+    <a href="/inv/add-inventory" style="display: inline-block; background-color: #0066cc; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 10px;">
+      + Add New Inventory Item
+    </a>
+  </div>
+</div>

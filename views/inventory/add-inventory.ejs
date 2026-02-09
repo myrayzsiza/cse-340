@@ -1,16 +1,199 @@
-<h1>Add Inventory Item</h1>
-<% if (errors) { errors.forEach(e => { %>
-  <p style="color:red"><%= e.msg %></p>
-<% }) } %>
-<form action="/inv/add-inventory" method="post">
-  <label for="inv_make">Make:</label>
-  <input type="text" id="inv_make" name="inv_make" value="<%= inv_make || '' %>" required>
+<% layout('layouts/layout') %>
 
-  <label for="inv_model">Model:</label>
-  <input type="text" id="inv_model" name="inv_model" value="<%= inv_model || '' %>" required>
+<h1><%= title %></h1>
 
-  <label for="classification_id">Classification:</label>
-  <%- classificationSelect %>
+<% if (errors && errors.length > 0) { %>
+  <div style="color: #d32f2f; border: 1px solid #d32f2f; padding: 12px; margin-bottom: 20px; border-radius: 4px;">
+    <strong>Please correct the following errors:</strong>
+    <ul>
+      <% errors.forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
 
-  <button type="submit">Add Vehicle</button>
+<form action="/inv/add-inventory" method="post" style="max-width: 600px; margin-top: 20px;">
+  
+  <!-- Make -->
+  <div style="margin-bottom: 15px;">
+    <label for="inv_make" style="display: block; margin-bottom: 5px; font-weight: bold;">
+      Make <span style="color: red;">*</span>
+    </label>
+    <input 
+      type="text" 
+      id="inv_make" 
+      name="inv_make"
+      value="<%= locals.inv_make || '' %>"
+      required
+      placeholder="e.g., Ford"
+      style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+    />
+  </div>
+
+  <!-- Model -->
+  <div style="margin-bottom: 15px;">
+    <label for="inv_model" style="display: block; margin-bottom: 5px; font-weight: bold;">
+      Model <span style="color: red;">*</span>
+    </label>
+    <input 
+      type="text" 
+      id="inv_model" 
+      name="inv_model"
+      value="<%= locals.inv_model || '' %>"
+      required
+      placeholder="e.g., Mustang"
+      style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+    />
+  </div>
+
+  <!-- Year -->
+  <div style="margin-bottom: 15px;">
+    <label for="inv_year" style="display: block; margin-bottom: 5px; font-weight: bold;">
+      Year <span style="color: red;">*</span>
+    </label>
+    <input 
+      type="number" 
+      id="inv_year" 
+      name="inv_year"
+      value="<%= locals.inv_year || '' %>"
+      required
+      min="1900"
+      max="2100"
+      placeholder="e.g., 2023"
+      style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+    />
+  </div>
+
+  <!-- Description -->
+  <div style="margin-bottom: 15px;">
+    <label for="inv_description" style="display: block; margin-bottom: 5px; font-weight: bold;">
+      Description <span style="color: red;">*</span>
+    </label>
+    <textarea 
+      id="inv_description" 
+      name="inv_description"
+      required
+      placeholder="Enter vehicle description"
+      rows="4"
+      style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: Arial, sans-serif;"
+    ><%= locals.inv_description || '' %></textarea>
+  </div>
+
+  <!-- Image URL -->
+  <div style="margin-bottom: 15px;">
+    <label for="inv_image" style="display: block; margin-bottom: 5px; font-weight: bold;">
+      Image URL <span style="color: red;">*</span>
+    </label>
+    <input 
+      type="text" 
+      id="inv_image" 
+      name="inv_image"
+      value="<%= locals.inv_image || '' %>"
+      required
+      placeholder="e.g., /images/vehicles/mustang.jpg"
+      style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+    />
+    <small style="display: block; margin-top: 5px; color: #666;">
+      Path to full-size image (e.g., /images/vehicles/filename.jpg)
+    </small>
+  </div>
+
+  <!-- Thumbnail URL -->
+  <div style="margin-bottom: 15px;">
+    <label for="inv_thumbnail" style="display: block; margin-bottom: 5px; font-weight: bold;">
+      Thumbnail URL <span style="color: red;">*</span>
+    </label>
+    <input 
+      type="text" 
+      id="inv_thumbnail" 
+      name="inv_thumbnail"
+      value="<%= locals.inv_thumbnail || '' %>"
+      required
+      placeholder="e.g., /images/vehicles/mustang-tn.jpg"
+      style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+    />
+    <small style="display: block; margin-top: 5px; color: #666;">
+      Path to thumbnail image (e.g., /images/vehicles/filename-tn.jpg)
+    </small>
+  </div>
+
+  <!-- Price -->
+  <div style="margin-bottom: 15px;">
+    <label for="inv_price" style="display: block; margin-bottom: 5px; font-weight: bold;">
+      Price <span style="color: red;">*</span>
+    </label>
+    <input 
+      type="number" 
+      id="inv_price" 
+      name="inv_price"
+      value="<%= locals.inv_price || '' %>"
+      required
+      min="0"
+      step="0.01"
+      placeholder="e.g., 25000"
+      style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+    />
+  </div>
+
+  <!-- Mileage -->
+  <div style="margin-bottom: 15px;">
+    <label for="inv_miles" style="display: block; margin-bottom: 5px; font-weight: bold;">
+      Mileage <span style="color: red;">*</span>
+    </label>
+    <input 
+      type="number" 
+      id="inv_miles" 
+      name="inv_miles"
+      value="<%= locals.inv_miles || '' %>"
+      required
+      min="0"
+      placeholder="e.g., 50000"
+      style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+    />
+  </div>
+
+  <!-- Color -->
+  <div style="margin-bottom: 15px;">
+    <label for="inv_color" style="display: block; margin-bottom: 5px; font-weight: bold;">
+      Color <span style="color: red;">*</span>
+    </label>
+    <input 
+      type="text" 
+      id="inv_color" 
+      name="inv_color"
+      value="<%= locals.inv_color || '' %>"
+      required
+      placeholder="e.g., Red"
+      style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+    />
+  </div>
+
+  <!-- Classification -->
+  <div style="margin-bottom: 20px;">
+    <label for="classificationList" style="display: block; margin-bottom: 5px; font-weight: bold;">
+      Classification <span style="color: red;">*</span>
+    </label>
+    <%- classificationSelect %>
+  </div>
+
+  <!-- Buttons -->
+  <div style="display: flex; gap: 10px; margin-top: 20px;">
+    <button 
+      type="submit"
+      style="padding: 10px 20px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;"
+    >
+      Add Vehicle
+    </button>
+    <a 
+      href="/inv/"
+      style="padding: 10px 20px; background-color: #666; color: white; text-decoration: none; border-radius: 4px; display: inline-block; text-align: center;"
+    >
+      Cancel
+    </a>
+  </div>
+
+  <p style="margin-top: 20px; color: #666;">
+    <span style="color: red;">*</span> = Required field
+  </p>
 </form>
