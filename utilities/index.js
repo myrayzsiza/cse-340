@@ -1,3 +1,15 @@
+// Build classification select list for forms
+async function buildClassificationList(selectedId = null) {
+  let data = await invModel.getClassifications();
+  let classificationList = '<select name="classification_id" id="classificationList" required>';
+  classificationList += "<option value=''>Choose a Classification</option>";
+  data.rows.forEach((row) => {
+    classificationList += `<option value="${row.classification_id}"${selectedId == row.classification_id ? " selected" : ""}>${row.classification_name}</option>`;
+  });
+  classificationList += "</select>";
+  return classificationList;
+}
+
 const invModel = require("../models/inventory-model")
 
 function formatPrice(value) {
