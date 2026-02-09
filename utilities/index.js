@@ -3,9 +3,22 @@ const invModel = require("../models/inventory-model")
 // Simple image path fixer - ensure paths include /vehicles/
 function getImagePath(imagePath) {
   if (!imagePath) return "/images/vehicles/no-image.png"
-  if (imagePath.includes("/vehicles/")) return imagePath
-  // If path is /images/xxx.jpg, change to /images/vehicles/xxx.jpg
-  return imagePath.replace("/images/", "/images/vehicles/")
+  
+  // Convert to string and trim
+  let path = String(imagePath).trim()
+  
+  // Already correct - has /images/vehicles/
+  if (path.includes("/images/vehicles/")) {
+    return path.startsWith("/") ? path : "/" + path
+  }
+  
+  // Has /images/ but missing /vehicles/ - add it
+  if (path.includes("/images/")) {
+    return path.replace("/images/", "/images/vehicles/")
+  }
+  
+  // Just a filename - add full path
+  return `/images/vehicles/${path}`
 }
 
 // Build classification select list for forms
