@@ -43,30 +43,23 @@ app.use("/inv", inventoryRoute)
 
 
 
-// File Not Found Route - must be last route in list
+
+// 404 handler (must be last route)
 app.use(async (req, res, next) => {
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
-})
+  let nav = await utilities.getNav();
+  res.status(404).render("errors/404", { title: "404 Not Found", nav });
+});
 
-
-/* ***********************
-* Express Error Handler
-* Place after all other middleware
-*************************/
+// Error handling middleware
 app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav()
-  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
+  let nav = await utilities.getNav();
+  console.error(`Error at: "${req.originalUrl}": ${err.message}`);
   if (err.status == 404) {
-    message = err.message
+    res.status(404).render("errors/404", { title: "404 Not Found", nav });
   } else {
-    message = "Oh no! There was a crash. Maybe try a different route?"
+    res.status(500).render("errors/500", { title: "500 Server Error", nav });
   }
-  res.render("errors/error", {
-    title: err.status || "Server Error",
-    message,
-    nav,
-  })
-})
+});
 
 
 

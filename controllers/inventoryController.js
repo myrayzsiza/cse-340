@@ -22,20 +22,24 @@ invCont.buildByClassificationId = async function (req, res, next) {
 /* ***************************
  *  Build vehicle detail view
  * ************************** */
+
+// Build vehicle detail view
 invCont.getVehicleDetail = async function (req, res, next) {
-  const invId = req.params.invId
-  let vehicle = await invModel.getVehicleById(invId)
-  const htmlData = await utilities.buildSingleVehicleDisplay(vehicle)
-  let nav = await utilities.getNav()
-  const vehicleTitle =
-    vehicle.inv_year + " " + vehicle.inv_make + " " + vehicle.inv_model
+  const invId = req.params.invId;
+  let vehicle = await invModel.getInventoryById(invId);
+  let nav = await utilities.getNav();
+  if (!vehicle) {
+    return res.status(404).render("../errors/404", { title: "Not Found", nav });
+  }
+  const htmlData = await utilities.buildSingleVehicleDisplay(vehicle);
+  const vehicleTitle = `${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}`;
   res.render("./inventory/detail", {
     title: vehicleTitle,
     nav,
     message: null,
     htmlData,
-  })
-}
+  });
+};
 
 /* ***************************
  *  Build management view
@@ -120,8 +124,10 @@ invCont.addInventory = async function (req, res, next) {
 /* ****************************************
  *  Process intentional error
  * ************************************ */
-invCont.throwError = async function (req, res) {
-  throw new Error("I am an intentional error")
-}
+
+// Intentional error for testing
+invCont.throwError = async function (req, res, next) {
+  throw new Error("Intentional 500 error for testing");
+};
 
 module.exports = invCont

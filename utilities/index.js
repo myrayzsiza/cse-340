@@ -85,7 +85,11 @@ Util.buildClassificationGrid = async function (data) {
     grid = '<ul id="inv-display">'
     data.forEach((vehicle) => {
       grid += '<li>'
-      grid += '<a href="/inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + " " + vehicle.inv_model + ' details"><img src="' + vehicle.inv_thumbnail + '" alt="Image of ' + vehicle.inv_make + " " + vehicle.inv_model + ' on CSE Motors" /></a>'
+      let thumb = vehicle.inv_thumbnail;
+      if (thumb && !thumb.startsWith('/images/vehicles/')) {
+        thumb = '/images/vehicles/' + thumb.replace(/^\/?images[\/\\]?/, '');
+      }
+      grid += '<a href="/inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + " " + vehicle.inv_model + ' details"><img src="' + thumb + '" alt="Image of ' + vehicle.inv_make + " " + vehicle.inv_model + ' on CSE Motors" /></a>'
       grid += '<div class="namePrice">'
       grid += "<hr />"
       grid += "<h2>"
@@ -102,25 +106,62 @@ Util.buildClassificationGrid = async function (data) {
   return grid
 }
 
+
 Util.buildSingleVehicleDisplay = async (vehicle) => {
-  let svd = '<section id="vehicle-display">'
-  svd += "<div>"
-  svd += '<section class="imagePrice">'
-  svd += "<img src='" + vehicle.inv_image + "' alt='Image of " + vehicle.inv_make + " " + vehicle.inv_model + " on cse motors' id='mainImage'>"
-  svd += "</section>"
-  svd += '<section class="vehicleDetail">'
-  svd += "<h3> " + vehicle.inv_make + " " + vehicle.inv_model + " Details</h3>"
-  svd += '<ul id="vehicle-details">'
-  svd += "<li><h4>Price: $" + new Intl.NumberFormat("en-US").format(vehicle.inv_price) + "</h4></li>"
-  svd += "<li><h4>Description:</h4> " + vehicle.inv_description + "</li>"
-  svd += "<li><h4>Color:</h4> " + vehicle.inv_color + "</li>"
-  svd += "<li><h4>Miles:</h4> " + new Intl.NumberFormat("en-US").format(vehicle.inv_miles) + "</li>"
-  svd += "</ul>"
-  svd += "</section>"
-  svd += "</div>"
-  svd += "</section>"
-  return svd
-}
+  if (!vehicle) return '<div>Vehicle not found.</div>';
+  const price = Number(vehicle.inv_price).toLocaleString("en-US", { style: "currency", currency: "USD" });
+  const miles = Number(vehicle.inv_miles).toLocaleString("en-US");
+  return `
+    <div class="vehicle-detail-container">
+      <div class="vehicle-image">
+        <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}" />
+      </div>
+      <div class="vehicle-info">
+        <h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
+        <p><strong>Price:</strong> ${price}</p>
+        <p><strong>Mileage:</strong> ${miles} miles</p>
+        <p><strong>Description:</strong> ${vehicle.inv_description}</p>
+        <p><strong>Color:</strong> ${vehicle.inv_color}</p>
+      </div>
+    </div>
+    <style>
+      .vehicle-detail-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+      .vehicle-image {
+        flex: 1 1 300px;
+        min-width: 250px;
+        max-width: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .vehicle-image img {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      .vehicle-info {
+        flex: 2 1 300px;
+        min-width: 250px;
+      }
+      @media (max-width: 700px) {
+        .vehicle-detail-container {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .vehicle-image, .vehicle-info {
+          max-width: 100%;
+        }
+      }
+    </style>
+  `;
+};
 
 Util.handleErrors = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
