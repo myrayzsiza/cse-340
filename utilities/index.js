@@ -89,7 +89,10 @@ Util.buildClassificationGrid = async function (data) {
       if (thumb && !thumb.startsWith('/images/vehicles/')) {
         thumb = '/images/vehicles/' + thumb.replace(/^\/?images[\/\\]?/, '');
       }
-      grid += '<a href="/inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + " " + vehicle.inv_model + ' details"><img src="' + thumb + '" alt="Image of ' + vehicle.inv_make + " " + vehicle.inv_model + ' on CSE Motors" /></a>'
+      // Debug: log the final image path
+      if (typeof console !== 'undefined') console.log('Vehicle image path:', thumb);
+      // Add fallback image if not found
+      grid += `<a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details"><img src="${thumb}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model} on CSE Motors" onerror="this.onerror=null;this.src='/images/vehicles/no-image-tn.png';" /></a>`
       grid += '<div class="namePrice">'
       grid += "<hr />"
       grid += "<h2>"
