@@ -12,7 +12,10 @@ const app = express()
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
+const accountRoute = require("./routes/accountRoute")
 const utilities = require('./utilities/index')
+const cookieParser = require("cookie-parser")
+const jwt = require("jsonwebtoken")
 
 const pool = require('./database/')
 
@@ -29,8 +32,26 @@ app.set("layout", "./layouts/layout") // not at views root
  * Middleware
  * ************************/
 
+// Parse cookies for JWT authentication
+app.use(cookieParser())
+
 // Serve static files from the public directory (for images, css, js, etc.)
-app.use(express.static("public"));
+app.use(express.static("public"))
+
+// Check JWT and set accountData in res.locals for all views
+app.use((req, res, next) => {
+  res.locals.accountData = null
+  try {
+    const token = req.cookies.jwt
+    if (token) {
+      const accountData = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+      res.locals.accountData = accountData
+    }
+  } catch (error) {
+    // Token is invalid or expired, accountData remains null
+  }
+  next()
+})
 
 /* ***********************
  * Routes
@@ -41,6 +62,9 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 
 // Inventory routes
 app.use("/inv", inventoryRoute)
+
+// Account routes
+app.use("/account", accountRoute)
 
 
 

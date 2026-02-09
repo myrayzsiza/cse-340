@@ -1,0 +1,145 @@
+<% layout('layouts/layout') %>
+
+<h1>Update Account</h1>
+
+<% if (errors && errors.length > 0) { %>
+  <div style="color: #d32f2f; border: 1px solid #d32f2f; padding: 12px; margin-bottom: 20px; border-radius: 4px;">
+    <strong>Please correct the following errors:</strong>
+    <ul>
+      <% errors.forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<% if (message && message.length) { %>
+  <div class="notice" style="color: green; border: 1px solid green; padding: 12px; margin-bottom: 20px; border-radius: 4px;">
+    <%= message %>
+  </div>
+<% } %>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+  <!-- Form 1: Account Information Update -->
+  <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+    <h2>Account Information</h2>
+    <form action="/account/update-info" method="post">
+      <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+
+      <div style="margin-bottom: 15px;">
+        <label for="account_firstname" style="display: block; margin-bottom: 5px; font-weight: bold;">
+          First Name <span style="color: red;">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="account_firstname" 
+          name="account_firstname"
+          value="<%= locals.account_firstname || accountData.account_firstname || '' %>"
+          required
+          placeholder="First name"
+          style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+        />
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label for="account_lastname" style="display: block; margin-bottom: 5px; font-weight: bold;">
+          Last Name <span style="color: red;">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="account_lastname" 
+          name="account_lastname"
+          value="<%= locals.account_lastname || accountData.account_lastname || '' %>"
+          required
+          placeholder="Last name"
+          style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+        />
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label for="account_email" style="display: block; margin-bottom: 5px; font-weight: bold;">
+          Email <span style="color: red;">*</span>
+        </label>
+        <input 
+          type="email" 
+          id="account_email" 
+          name="account_email"
+          value="<%= locals.account_email || accountData.account_email || '' %>"
+          required
+          placeholder="user@example.com"
+          style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+        />
+      </div>
+
+      <button 
+        type="submit"
+        style="width: 100%; padding: 10px 20px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;"
+      >
+        Update Information
+      </button>
+    </form>
+  </div>
+
+  <!-- Form 2: Password Change -->
+  <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+    <h2>Change Password</h2>
+    <form action="/account/change-password" method="post">
+      <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+
+      <div style="margin-bottom: 15px;">
+        <label for="account_password" style="display: block; margin-bottom: 5px; font-weight: bold;">
+          New Password <span style="color: red;">*</span>
+        </label>
+        <input 
+          type="password" 
+          id="account_password" 
+          name="account_password"
+          required
+          placeholder="New password"
+          style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+        />
+        <small style="display: block; margin-top: 5px; color: #666;">
+          Password must be at least 12 characters, contain at least one uppercase letter, one lowercase letter, one digit, and one special character.
+        </small>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label for="account_password_confirm" style="display: block; margin-bottom: 5px; font-weight: bold;">
+          Confirm Password <span style="color: red;">*</span>
+        </label>
+        <input 
+          type="password" 
+          id="account_password_confirm" 
+          name="account_password_confirm"
+          required
+          placeholder="Confirm password"
+          style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+        />
+      </div>
+
+      <p style="background-color: #f5f5f5; padding: 10px; border-radius: 4px; margin-bottom: 20px; font-size: 14px;">
+        <strong>Password Requirements:</strong>
+        <ul style="margin: 5px 0 0 20px; padding: 0;">
+          <li>At least 12 characters</li>
+          <li>At least one uppercase letter (A-Z)</li>
+          <li>At least one lowercase letter (a-z)</li>
+          <li>At least one digit (0-9)</li>
+          <li>At least one special character (!@#$%^&*)</li>
+        </ul>
+      </p>
+
+      <button 
+        type="submit"
+        style="width: 100%; padding: 10px 20px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;"
+      >
+        Change Password
+      </button>
+    </form>
+  </div>
+</div>
+
+<div style="margin-top: 20px; text-align: center;">
+  <a href="/account/management" style="padding: 10px 20px; background-color: #666; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">
+    Back to Account Management
+  </a>
+</div>
