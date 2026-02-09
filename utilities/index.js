@@ -1,5 +1,13 @@
 const invModel = require("../models/inventory-model")
 
+// Simple image path fixer - ensure paths include /vehicles/
+function getImagePath(imagePath) {
+  if (!imagePath) return "/images/vehicles/no-image.png"
+  if (imagePath.includes("/vehicles/")) return imagePath
+  // If path is /images/xxx.jpg, change to /images/vehicles/xxx.jpg
+  return imagePath.replace("/images/", "/images/vehicles/")
+}
+
 // Build classification select list for forms
 async function buildClassificationList(selectedId = null) {
   let data = await invModel.getClassifications();
@@ -26,7 +34,7 @@ function buildVehicleDetailHTML(v) {
   const title = `${v.inv_make} ${v.inv_model}`
   const price = formatPrice(v.inv_price)
   const mileage = formatMileage(v.inv_miles)
-  const imageUrl = v.inv_image || "/images/vehicles/no-image.png"
+  const imageUrl = getImagePath(v.inv_image)
 
   const html = `
     <article class="vehicle-detail__card" aria-labelledby="vehicle-title">
@@ -97,7 +105,7 @@ Util.buildClassificationGrid = async function (data) {
     grid = '<ul id="inv-display">'
     data.forEach((vehicle) => {
       grid += '<li>'
-      let thumb = vehicle.inv_thumbnail
+      let thumb = getImagePath(vehicle.inv_thumbnail)
       grid += `<a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details"><img src="${thumb}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model} on CSE Motors" loading="lazy" /></a>`
       grid += '<div class="namePrice">'
       grid += "<hr />"
@@ -120,7 +128,7 @@ Util.buildSingleVehicleDisplay = async (vehicle) => {
   if (!vehicle) return '<div>Vehicle not found.</div>';
   const price = Number(vehicle.inv_price).toLocaleString("en-US", { style: "currency", currency: "USD" });
   const miles = Number(vehicle.inv_miles).toLocaleString("en-US");
-  const imageUrl = vehicle.inv_image;
+  const imageUrl = getImagePath(vehicle.inv_image);
   return `
     <div class="vehicle-detail-container">
       <div class="vehicle-image">
@@ -176,6 +184,7 @@ Util.buildSingleVehicleDisplay = async (vehicle) => {
 Util.handleErrors = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
 module.exports = {
+  getImagePath,
   buildVehicleDetailHTML,
   buildClassificationList,
   ...Util
