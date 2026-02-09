@@ -86,8 +86,11 @@ Util.buildClassificationGrid = async function (data) {
     data.forEach((vehicle) => {
       grid += '<li>'
       let thumb = vehicle.inv_thumbnail;
-      if (thumb && !thumb.startsWith('/images/vehicles/')) {
-        thumb = '/images/vehicles/' + thumb.replace(/^\/?images[\/\\]?/, '');
+      if (thumb) {
+        // Remove any leading /images/ or images/
+        thumb = thumb.replace(/^\/?images[\/\\]?/, '');
+        // Always use /images/vehicles/
+        thumb = '/images/vehicles/' + thumb;
       }
       // Debug: log the final image path
       if (typeof console !== 'undefined') console.log('Vehicle image path:', thumb);
