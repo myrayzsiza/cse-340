@@ -32,6 +32,18 @@ router.post("/update-info", checkLogin, utilities.handleErrors(accountController
 // Process password change (Protected)
 router.post("/change-password", checkLogin, utilities.handleErrors(accountController.changePassword))
 
+// Get forgot password view
+router.get("/forgot-password", utilities.handleErrors(accountController.buildForgotPasswordView))
+
+// Post forgot password request
+router.post("/forgot-password", utilities.handleErrors(accountController.processForgotPassword))
+
+// Get reset password view
+router.get("/reset-password/:token", utilities.handleErrors(accountController.buildResetPasswordView))
+
+// Post reset password process
+router.post("/reset-password", utilities.handleErrors(accountController.processResetPassword))
+
 // Logout
 router.get("/logout", utilities.handleErrors(accountController.logout))
 

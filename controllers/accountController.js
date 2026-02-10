@@ -403,4 +403,161 @@ accCont.logout = async function (req, res, next) {
   res.redirect("/")
 }
 
+/* ****************************
+ *  Build forgot password view
+ **************************** */
+accCont.buildForgotPasswordView = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("account/forgot-password", {
+    title: "Forgot Password",
+    nav,
+    errors: null,
+  })
+}
+
+/* ****************************
+ *  Process forgot password request
+ **************************** */
+accCont.processForgotPassword = async function (req, res, next) {
+  const { account_email } = req.body
+
+  // Server-side validation
+  let errors = []
+
+  if (!account_email || account_email.trim() === "") {
+    errors.push({ msg: "Email is required." })
+  }
+
+  if (errors.length > 0) {
+    let nav = await utilities.getNav()
+    return res.render("account/forgot-password", {
+      title: "Forgot Password",
+      nav,
+      errors,
+      account_email,
+    })
+  }
+
+  try {
+    // Check if account exists
+    const account = await accountModel.getAccountByEmail(account_email)
+
+    if (!account) {
+      // For security, always show success message even if email doesn't exist
+      req.flash("message", "If an account exists with that email, a password reset link has been sent.")
+      return res.redirect("/account/login")
+    }
+
+    // Generate reset token (crypto random string)
+    const crypto = require("crypto")
+    const resetToken = crypto.randomBytes(32).toString("hex")
+    const expiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000) // 1 hour expiration
+
+    // Save reset token to database
+    await accountModel.saveResetToken(account_email, resetToken, expiresAt)
+
+    // TODO: Send email with reset link
+    // For now, log to console for testing
+    console.log(`Password reset link: /account/reset-password/${resetToken}`)
+
+    req.flash("message", "If an account exists with that email, a password reset link has been sent.")
+    res.redirect("/account/login")
+  } catch (error) {
+    next(error)
+  }
+}
+
+/* ****************************
+ *  Build reset password view
+ **************************** */
+accCont.buildResetPasswordView = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  const { token } = req.params
+
+  try {
+    // Verify token exists and hasn't expired
+    const account = await accountModel.getAccountByResetToken(token)
+
+    if (!account) {
+      req.flash("notice", "Password reset link has expired or is invalid. Please request a new one.")
+      return res.redirect("/account/forgot-password")
+    }
+
+    res.render("account/reset-password", {
+      title: "Reset Password",
+      nav,
+      token,
+      errors: null,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+/* ****************************
+ *  Process reset password
+ **************************** */
+accCont.processResetPassword = async function (req, res, next) {
+  const { token, account_password, account_password_confirm } = req.body
+
+  // Server-side validation
+  let errors = []
+
+  if (!token || token.trim() === "") {
+    errors.push({ msg: "Invalid reset token." })
+  }
+
+  if (!account_password || account_password.trim() === "") {
+    errors.push({ msg: "New password is required." })
+  } else if (account_password.length < 12) {
+    errors.push({ msg: "Password must be at least 12 characters." })
+  } else if (!/[A-Z]/.test(account_password)) {
+    errors.push({ msg: "Password must contain at least one uppercase letter." })
+  } else if (!/[a-z]/.test(account_password)) {
+    errors.push({ msg: "Password must contain at least one lowercase letter." })
+  } else if (!/\d/.test(account_password)) {
+    errors.push({ msg: "Password must contain at least one digit." })
+  } else if (!/[!@#$%^&*]/.test(account_password)) {
+    errors.push({ msg: "Password must contain at least one special character (!@#$%^&*)." })
+  }
+
+  if (!account_password_confirm || account_password_confirm.trim() === "") {
+    errors.push({ msg: "Please confirm your password." })
+  } else if (account_password !== account_password_confirm) {
+    errors.push({ msg: "Passwords do not match." })
+  }
+
+  if (errors.length > 0) {
+    let nav = await utilities.getNav()
+    return res.render("account/reset-password", {
+      title: "Reset Password",
+      nav,
+      token,
+      errors,
+    })
+  }
+
+  try {
+    // Verify token and get account
+    const account = await accountModel.getAccountByResetToken(token)
+
+    if (!account) {
+      req.flash("notice", "Password reset link has expired or is invalid. Please request a new one.")
+      return res.redirect("/account/forgot-password")
+    }
+
+    // Hash new password
+    let hashedPassword = await bcrypt.hashSync(account_password, 10)
+
+    // Update password and clear reset token
+    await accountModel.updatePassword(account.account_id, hashedPassword)
+    await accountModel.clearResetToken(account.account_id)
+
+    req.flash("message", "Your password has been reset successfully. Please log in with your new password.")
+    res.redirect("/account/login")
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = accCont

@@ -88,10 +88,70 @@ async function updatePassword(accountId, hashedPassword) {
   }
 }
 
+/* ****************************
+ *  Save password reset token
+ **************************** */
+async function saveResetToken(email, resetToken, expiresAt) {
+  try {
+    const sql = `
+      UPDATE account 
+      SET reset_token = $1, reset_token_expires = $2
+      WHERE account_email = $3
+      RETURNING *`
+
+    const data = await pool.query(sql, [resetToken, expiresAt, email])
+    return data.rowCount > 0
+  } catch (error) {
+    console.error("saveResetToken error: " + error)
+    throw error
+  }
+}
+
+/* ****************************
+ *  Get account by reset token
+ **************************** */
+async function getAccountByResetToken(resetToken) {
+  try {
+    const sql = `
+      SELECT * FROM account 
+      WHERE reset_token = $1 
+      AND reset_token_expires > NOW()
+      LIMIT 1`
+
+    const data = await pool.query(sql, [resetToken])
+    return data.rows[0]
+  } catch (error) {
+    console.error("getAccountByResetToken error: " + error)
+    throw error
+  }
+}
+
+/* ****************************
+ *  Clear reset token
+ **************************** */
+async function clearResetToken(accountId) {
+  try {
+    const sql = `
+      UPDATE account 
+      SET reset_token = NULL, reset_token_expires = NULL
+      WHERE account_id = $1
+      RETURNING *`
+
+    const data = await pool.query(sql, [accountId])
+    return data.rowCount > 0
+  } catch (error) {
+    console.error("clearResetToken error: " + error)
+    throw error
+  }
+}
+
 module.exports = {
   getAccountById,
   getAccountByEmail,
   registerAccount,
   updateAccountInfo,
   updatePassword,
+  saveResetToken,
+  getAccountByResetToken,
+  clearResetToken,
 }
