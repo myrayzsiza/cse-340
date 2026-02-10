@@ -224,7 +224,14 @@ accCont.buildAccountManagementView = async function (req, res, next) {
  **************************** */
 accCont.buildAccountUpdateView = async function (req, res, next) {
   let nav = await utilities.getNav()
-  const accountId = res.locals.accountData.account_id
+  const accountId = req.params.accountId
+  
+  // Security check: users can only update their own account
+  if (parseInt(accountId) !== res.locals.accountData.account_id) {
+    req.flash("notice", "You do not have permission to update that account.")
+    return res.redirect("/account/management")
+  }
+  
   const account = await accountModel.getAccountById(accountId)
   
   if (!account) {
@@ -245,6 +252,12 @@ accCont.buildAccountUpdateView = async function (req, res, next) {
 accCont.updateAccountInfo = async function (req, res, next) {
   const { account_id, account_firstname, account_lastname, account_email } = req.body
 
+  // Security check: users can only update their own account
+  if (parseInt(account_id) !== res.locals.accountData.account_id) {
+    req.flash("notice", "You do not have permission to update that account.")
+    return res.redirect("/account/management")
+  }
+
   // Server-side validation
   let errors = []
 
@@ -260,6 +273,12 @@ accCont.updateAccountInfo = async function (req, res, next) {
     errors.push({ msg: "Email is required." })
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(account_email)) {
     errors.push({ msg: "Valid email is required." })
+  } else {
+    // Check if email already exists (and belongs to a different account)
+    const existingAccount = await accountModel.getAccountByEmail(account_email)
+    if (existingAccount && existingAccount.account_id != account_id) {
+      errors.push({ msg: "Email is already registered with another account." })
+    }
   }
 
   if (errors.length > 0) {
@@ -310,6 +329,12 @@ accCont.updateAccountInfo = async function (req, res, next) {
  **************************** */
 accCont.changePassword = async function (req, res, next) {
   const { account_id, account_password, account_password_confirm } = req.body
+
+  // Security check: users can only change their own password
+  if (parseInt(account_id) !== res.locals.accountData.account_id) {
+    req.flash("notice", "You do not have permission to change that password.")
+    return res.redirect("/account/management")
+  }
 
   // Server-side validation
   let errors = []

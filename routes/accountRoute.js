@@ -24,7 +24,7 @@ router.post("/register", utilities.handleErrors(accountController.processRegiste
 router.get("/management", checkLogin, utilities.handleErrors(accountController.buildAccountManagementView))
 
 // Get account update view (Protected)
-router.get("/update", checkLogin, utilities.handleErrors(accountController.buildAccountUpdateView))
+router.get("/update/:accountId", checkLogin, utilities.handleErrors(accountController.buildAccountUpdateView))
 
 // Process account information update (Protected)
 router.post("/update-info", checkLogin, utilities.handleErrors(accountController.updateAccountInfo))
