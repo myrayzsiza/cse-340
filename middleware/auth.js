@@ -15,6 +15,7 @@ const checkLogin = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
     req.accountData = decoded
+    res.locals.accountData = decoded
     next()
   } catch (error) {
     req.flash("notice", "Session expired. Please log in again.")
@@ -38,6 +39,7 @@ const checkAdminAuth = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
     req.accountData = decoded
+    res.locals.accountData = decoded
 
     // Only allow Employee and Admin types
     if (decoded.account_type !== "Employee" && decoded.account_type !== "Admin") {

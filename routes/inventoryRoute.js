@@ -4,6 +4,8 @@ const router = new express.Router()
 const inventoryController = require("../controllers/inventoryController")
 const utilities = require("../utilities")
 const { checkAdminAuth } = require("../middleware/auth")
+const { classificationRules, checkClassificationData } = require("../middleware/classificationValidation")
+const { inventoryRules, checkInventoryData } = require("../middleware/inventoryValidation")
 
 
 /* ****************************************
@@ -17,13 +19,13 @@ router.get("/", checkAdminAuth, utilities.handleErrors(inventoryController.build
 router.get("/add-classification", checkAdminAuth, utilities.handleErrors(inventoryController.buildAddClassification))
 
 // Add Classification - POST process
-router.post("/add-classification", checkAdminAuth, utilities.handleErrors(inventoryController.processAddClassification))
+router.post("/add-classification", checkAdminAuth, classificationRules(), checkClassificationData, utilities.handleErrors(inventoryController.processAddClassification))
 
 // Add Inventory - GET form
 router.get("/add-inventory", checkAdminAuth, utilities.handleErrors(inventoryController.buildAddInventory))
 
 // Add Inventory - POST process
-router.post("/add-inventory", checkAdminAuth, utilities.handleErrors(inventoryController.processAddInventory))
+router.post("/add-inventory", checkAdminAuth, inventoryRules(), checkInventoryData, utilities.handleErrors(inventoryController.processAddInventory))
 
 
 /* ****************************************

@@ -1,6 +1,6 @@
 <% layout('layouts/layout') %>
 
-<h1>Account Management</h1>
+<h1>Account Dashboard</h1>
 
 <% if (message && message.length) { %>
   <div class="notice" style="color: green; border: 1px solid green; padding: 12px; margin-bottom: 20px; border-radius: 4px;">
@@ -8,17 +8,43 @@
   </div>
 <% } %>
 
-<h2>Welcome <%= accountData.account_firstname %></h2>
+<h2>Welcome, <%= accountData.account_firstname %>!</h2>
 
-<div style="margin-top: 20px;">
-  <h3>Account Options</h3>
-  <ul style="list-style: none; padding: 0;">
-    <li style="margin-bottom: 10px;">
-      <a href="/account/update/<%= accountData.account_id %>" style="display: inline-block; background-color: #0066cc; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
-        Update Account Information
-      </a>
-    </li>
-  </ul>
+<!-- Account Details Card -->
+<div style="background-color: #f9f9f9; border: 1px solid #ddd; padding: 25px; border-radius: 8px; margin-top: 20px; max-width: 500px;">
+  <h3 style="margin-top: 0; color: #333;">Your Account Information</h3>
+  
+  <div style="margin-bottom: 15px;">
+    <label style="font-weight: bold; color: #555; display: block; margin-bottom: 5px;">First Name:</label>
+    <p style="margin: 0; padding: 8px; background-color: white; border: 1px solid #ddd; border-radius: 4px;">
+      <%= accountData.account_firstname %>
+    </p>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <label style="font-weight: bold; color: #555; display: block; margin-bottom: 5px;">Last Name:</label>
+    <p style="margin: 0; padding: 8px; background-color: white; border: 1px solid #ddd; border-radius: 4px;">
+      <%= accountData.account_lastname %>
+    </p>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <label style="font-weight: bold; color: #555; display: block; margin-bottom: 5px;">Email:</label>
+    <p style="margin: 0; padding: 8px; background-color: white; border: 1px solid #ddd; border-radius: 4px;">
+      <%= accountData.account_email %>
+    </p>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <label style="font-weight: bold; color: #555; display: block; margin-bottom: 5px;">Account Type:</label>
+    <p style="margin: 0; padding: 8px; background-color: white; border: 1px solid #ddd; border-radius: 4px;">
+      <%= accountData.account_type %>
+    </p>
+  </div>
+
+  <a href="/account/update/<%= accountData.account_id %>" style="display: inline-block; width: 100%; text-align: center; background-color: #0066cc; color: white; padding: 12px; text-decoration: none; border-radius: 4px; font-weight: bold; border: none; cursor: pointer;">
+    Update Account Information
+  </a>
 </div>
 
 <% if (accountData.account_type === 'Employee' || accountData.account_type === 'Admin') { %>
