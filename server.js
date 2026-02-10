@@ -16,6 +16,8 @@ const accountRoute = require("./routes/accountRoute")
 const utilities = require('./utilities/index')
 const cookieParser = require("cookie-parser")
 const jwt = require("jsonwebtoken")
+const session = require("express-session")
+const flash = require("connect-flash")
 
 const pool = require('./database/')
 
@@ -32,8 +34,28 @@ app.set("layout", "./layouts/layout") // not at views root
  * Middleware
  * ************************/
 
+// Session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET || "default-secret",
+  resave: true,
+  saveUninitialized: true,
+}))
+
+// Flash messaging middleware
+app.use(flash())
+
+// Make flash messages available in routes
+app.use((req, res, next) => {
+  res.locals.messages = req.flash()
+  next()
+})
+
 // Parse cookies for JWT authentication
 app.use(cookieParser())
+
+// Parse form data from request body
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 // Serve static files from the public directory (for images, css, js, etc.)
 app.use(express.static("public"))
