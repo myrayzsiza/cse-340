@@ -1,0 +1,118 @@
+<%# Vehicle Inventory View %>
+<%- nav %>
+
+<h1><%= title %></h1>
+
+<section id="inventory-filters">
+  <div class="filter-container">
+    <h2>Filter by Category</h2>
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-classification-id="all" title="View all vehicles">
+        All Vehicles
+      </button>
+      <% classifications.forEach(classification => { %>
+        <button 
+          class="filter-btn" 
+          data-classification-id="<%= classification.classification_id %>" 
+          title="View <% classification.classification_name %> vehicles"
+        >
+          <%= classification.classification_name %>
+        </button>
+      <% }) %>
+    </div>
+  </div>
+
+  <div class="search-container">
+    <input 
+      type="text" 
+      id="search-input" 
+      class="search-box" 
+      placeholder="Search by year, make, model, or description..."
+      aria-label="Search vehicles"
+    />
+  </div>
+
+  <% if (typeof locals.isAdmin !== 'undefined' && locals.isAdmin) { %>
+    <div class="action-container">
+      <a href="/inv/add-inventory" class="add-btn" title="Add new vehicle to inventory">
+        ➕ Add Inventory
+      </a>
+    </div>
+  <% } %>
+</section>
+
+<section id="inventory-results">
+  <%- grid %>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const searchInput = document.getElementById('search-input');
+  const vehiclesList = document.getElementById('inv-display');
+  const vehicles = <%= JSON.stringify(vehicles) %>;
+
+  function filterAndSearch() {
+    const activeClassificationId = document.querySelector('.filter-btn.active').dataset.classificationId;
+    const searchTerm = searchInput.value.toLowerCase().trim();
+
+    // Filter vehicles based on classification and search term
+    const filteredVehicles = vehicles.filter(vehicle => {
+      const matchesClassification = activeClassificationId === 'all' || 
+        vehicle.classification_id == activeClassificationId;
+      
+      const searchable = `${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model} ${vehicle.inv_description}`.toLowerCase();
+      const matchesSearch = searchable.includes(searchTerm);
+
+      return matchesClassification && matchesSearch;
+    });
+
+    // Rebuild the grid
+    if (filteredVehicles.length > 0) {
+      let html = '<ul id="inv-display">';
+      filteredVehicles.forEach(vehicle => {
+        const thumb = vehicle.inv_thumbnail.includes('/images/vehicles/') 
+          ? vehicle.inv_thumbnail 
+          : `/images/vehicles/${vehicle.inv_thumbnail}`;
+        const price = new Intl.NumberFormat('en-US', { 
+          style: 'currency', 
+          currency: 'USD',
+          maximumFractionDigits: 0 
+        }).format(vehicle.inv_price);
+
+        html += `<li>
+          <a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">
+            <img src="${thumb}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}" loading="lazy" />
+          </a>
+          <div class="namePrice">
+            <hr />
+            <h2>
+              <a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">
+                ${vehicle.inv_make} ${vehicle.inv_model}
+              </a>
+            </h2>
+            <span>${price}</span>
+          </div>
+        </li>`;
+      });
+      html += '</ul>';
+      vehiclesList.outerHTML = html;
+    } else {
+      vehiclesList.outerHTML = '<p class="notice">Sorry, no matching vehicles could be found.</p>';
+    }
+  }
+
+  // Handle filter button clicks
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      filterAndSearch();
+    });
+  });
+
+  // Handle search input
+  searchInput.addEventListener('input', filterAndSearch);
+});
+</script>

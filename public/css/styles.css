@@ -522,6 +522,119 @@ input[name$='Thumbnail'] {
   font-size: large;
 }
 
+/* Inventory filters and search */
+#inventory-filters {
+  background-color: #f5f5f5;
+  padding: 2rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.filter-container {
+  margin-bottom: 1.5rem;
+}
+
+.filter-container h2 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-start;
+}
+
+.filter-btn {
+  padding: 0.75rem 1.25rem;
+  background-color: var(--primary-background);
+  border: 2px solid var(--primary-text);
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  font-weight: 500;
+  color: var(--primary-text);
+}
+
+.filter-btn:hover {
+  background-color: var(--main-accent);
+  border-color: var(--main-accent);
+  color: var(--primary-background);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(1, 176, 211, 0.3);
+}
+
+.filter-btn.active {
+  background-color: var(--main-accent);
+  border-color: var(--main-accent);
+  color: var(--primary-background);
+  box-shadow: 0 4px 12px rgba(1, 176, 211, 0.4);
+}
+
+.search-container {
+  margin-bottom: 1rem;
+}
+
+.search-box {
+  width: 100%;
+  max-width: 500px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid var(--primary-text);
+  border-radius: 6px;
+  transition: all 0.3s ease-in-out;
+}
+
+.search-box:focus {
+  outline: none;
+  border-color: var(--main-accent);
+  box-shadow: 0 0 8px rgba(1, 176, 211, 0.3);
+  background-color: rgba(1, 176, 211, 0.05);
+}
+
+.search-box::placeholder {
+  color: #999;
+}
+
+.action-container {
+  margin-top: 1rem;
+}
+
+.add-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--main-accent);
+  color: var(--primary-background);
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s ease-in-out;
+  border: 2px solid var(--main-accent);
+}
+
+.add-btn:hover {
+  background-color: var(--primary-background);
+  color: var(--main-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(1, 176, 211, 0.3);
+}
+
+#inventory-results {
+  margin-top: 1.5rem;
+}
+
+.notice {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  background-color: var(--notice-background);
+  border-radius: 8px;
+}
+
 @media only screen and (min-width: 768px) {
   body {
     background-image:

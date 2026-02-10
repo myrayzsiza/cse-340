@@ -9,6 +9,24 @@ async function getClassifications() {
 
 /* ***************************
  *  Get all inventory items with classification data
+ * ************************** */
+async function getAllInventory() {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.inventory AS i 
+       JOIN public.classification AS c 
+       ON i.classification_id = c.classification_id 
+       ORDER BY i.inv_year DESC, i.inv_make, i.inv_model`
+    )
+    return data.rows
+  } catch (error) {
+    console.error("getAllInventory error: " + error)
+    throw error
+  }
+}
+
+/* ***************************
+ *  Get all inventory items with classification data
  *  filtered by classification_id
  * ************************** */
 async function getInventoryByClassificationId(classification_id) {
@@ -102,6 +120,7 @@ async function addInventory(vehicleData) {
 
 module.exports = {
   getClassifications,
+  getAllInventory,
   getInventoryByClassificationId,
   getInventoryById,
   addClassification,

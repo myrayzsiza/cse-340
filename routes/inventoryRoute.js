@@ -9,6 +9,13 @@ const { inventoryRules, checkInventoryData } = require("../middleware/inventoryV
 
 
 /* ****************************************
+ * Inventory Display Routes
+ **************************************** */
+
+// Display all inventory with filtering
+router.get("/", utilities.handleErrors(inventoryController.buildInventoryView))
+
+/* ****************************************
  * Inventory Management Routes (Admin Protected)
  **************************************** */
 

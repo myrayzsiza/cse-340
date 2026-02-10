@@ -4,8 +4,22 @@ const utilities = require("../utilities/")
 const invCont = {}
 
 /* ***************************
- *  Build inventory by classification view
+ *  Build inventory view - all vehicles with filtering
  * ************************** */
+invCont.buildInventoryView = async function (req, res, next) {
+  const data = await invModel.getAllInventory()
+  const grid = await utilities.buildClassificationGrid(data)
+  let nav = await utilities.getNav()
+  const classifications = await invModel.getClassifications()
+  
+  res.render("./inventory/inventory", {
+    title: "Vehicle Inventory",
+    nav,
+    grid,
+    classifications: classifications.rows,
+    vehicles: data,
+  })
+}
 invCont.buildByClassificationId = async function (req, res, next) {
   const classification_id = req.params.classificationId
   const data = await invModel.getInventoryByClassificationId(classification_id)
