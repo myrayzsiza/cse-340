@@ -635,6 +635,169 @@ input[name$='Thumbnail'] {
   border-radius: 8px;
 }
 
+/* Contact Page Styling */
+.contact-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.contact-left h2,
+.contact-right h2 {
+  color: var(--main-accent);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.contact-info {
+  margin-top: 1.5rem;
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--main-accent);
+}
+
+.info-item {
+  margin-bottom: 1.5rem;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-item strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--primary-text);
+}
+
+.info-item p,
+.info-item a {
+  margin: 0;
+  color: var(--primary-text);
+  text-decoration: none;
+}
+
+.info-item a:hover {
+  color: var(--main-accent);
+  text-decoration: underline;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--primary-text);
+}
+
+.required {
+  color: var(--notification);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: all 0.3s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--main-accent);
+  box-shadow: 0 0 8px rgba(1, 176, 211, 0.2);
+  background-color: rgba(1, 176, 211, 0.02);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+.submit-btn {
+  background-color: var(--main-accent);
+  color: var(--primary-background);
+  border: 2px solid var(--main-accent);
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-background);
+  color: var(--main-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(1, 176, 211, 0.3);
+}
+
+/* About Page Styling */
+.about-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.about-section:last-child {
+  border-bottom: none;
+}
+
+.about-section h2 {
+  color: var(--main-accent);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.about-section p {
+  line-height: 1.8;
+  color: var(--primary-text);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.features-list,
+.values-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.features-list li,
+.values-list li {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.6;
+}
+
+.features-list li:before,
+.values-list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--main-accent);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.features-list li strong,
+.values-list li strong {
+  color: var(--primary-text);
+  font-weight: 700;
+}
+
 @media only screen and (min-width: 768px) {
   body {
     background-image:
@@ -788,5 +951,31 @@ input[name$='Thumbnail'] {
   #vehicle-display #mainImage {
     width: auto;
     object-fit: contain;
+  }
+
+  /* Contact Page - Responsive */
+  .contact-wrapper {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .contact-left,
+  .contact-right {
+    padding: 0 1rem;
+  }
+
+  /* About Page - Responsive */
+  .about-section h2 {
+    font-size: 1.6rem;
+  }
+
+  .about-section p {
+    font-size: 1.1rem;
+  }
+
+  .features-list li,
+  .values-list li {
+    font-size: 1.05rem;
+    margin-bottom: 1.2rem;
   }
 }

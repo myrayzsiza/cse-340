@@ -45,12 +45,17 @@
   <%- grid %>
 </section>
 
+<script type="application/json" id="vehiclesData">
+<%-JSON.stringify(vehicles)%>
+</script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const filterButtons = document.querySelectorAll('.filter-btn');
   const searchInput = document.getElementById('search-input');
   const vehiclesList = document.getElementById('inv-display');
-  const vehicles = <%= JSON.stringify(vehicles) %>;
+  const vehiclesData = document.getElementById('vehiclesData');
+  const vehicles = JSON.parse(vehiclesData.textContent);
 
   function filterAndSearch() {
     const activeClassificationId = document.querySelector('.filter-btn.active').dataset.classificationId;

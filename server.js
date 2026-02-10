@@ -82,6 +82,10 @@ app.use(static)
 //Index Route
 app.get("/", utilities.handleErrors(baseController.buildHome))
 
+// About and Contact routes
+app.get("/about", utilities.handleErrors(baseController.buildAbout))
+app.get("/contact", utilities.handleErrors(baseController.buildContact))
+
 // Inventory routes
 app.use("/inv", inventoryRoute)
 
