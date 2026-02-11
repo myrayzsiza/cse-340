@@ -43,8 +43,13 @@ app.set("layout", "./layouts/layout") // not at views root
 // Session middleware
 app.use(session({
   secret: process.env.SESSION_SECRET || "default-secret",
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 1000 * 60 * 60 * 24 // 24 hours
+  }
 }))
 
 // Flash messaging middleware
@@ -66,14 +71,16 @@ app.use(express.json())
 // Serve static files from the public directory (for images, css, js, etc.)
 app.use(express.static("public"))
 
-// Check JWT and set accountData in res.locals for all views
+// Check JWT and set accountData in res.locals and req for all views
 app.use((req, res, next) => {
   res.locals.accountData = null
+  req.accountData = null
   try {
     const token = req.cookies.jwt
     if (token) {
       const accountData = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
       res.locals.accountData = accountData
+      req.accountData = accountData
     }
   } catch (error) {
     // Token is invalid or expired, accountData remains null

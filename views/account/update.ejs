@@ -85,6 +85,23 @@
       <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
 
       <div style="margin-bottom: 15px;">
+        <label for="current_password" style="display: block; margin-bottom: 5px; font-weight: bold;">
+          Current Password <span style="color: red;">*</span>
+        </label>
+        <input 
+          type="password" 
+          id="current_password" 
+          name="current_password"
+          required
+          placeholder="Enter your current password"
+          style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
+        />
+        <small style="display: block; margin-top: 5px; color: #666;">
+          Enter your current password to verify your identity
+        </small>
+      </div>
+
+      <div style="margin-bottom: 15px;">
         <label for="account_password" style="display: block; margin-bottom: 5px; font-weight: bold;">
           New Password <span style="color: red;">*</span>
         </label>
@@ -116,7 +133,7 @@
       </div>
 
       <p style="background-color: #f5f5f5; padding: 10px; border-radius: 4px; margin-bottom: 20px; font-size: 14px;">
-        <strong>Password Requirements:</strong>
+        <strong>New Password Requirements:</strong>
         <ul style="margin: 5px 0 0 20px; padding: 0;">
           <li>At least 12 characters</li>
           <li>At least one uppercase letter (A-Z)</li>

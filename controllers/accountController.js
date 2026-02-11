@@ -328,7 +328,7 @@ accCont.updateAccountInfo = async function (req, res, next) {
  *  Process password change
  **************************** */
 accCont.changePassword = async function (req, res, next) {
-  const { account_id, account_password, account_password_confirm } = req.body
+  const { account_id, current_password, account_password, account_password_confirm } = req.body
 
   // Security check: users can only change their own password
   if (parseInt(account_id) !== res.locals.accountData.account_id) {
@@ -338,6 +338,10 @@ accCont.changePassword = async function (req, res, next) {
 
   // Server-side validation
   let errors = []
+
+  if (!current_password || current_password.trim() === "") {
+    errors.push({ msg: "Current password is required." })
+  }
 
   if (!account_password || account_password.trim() === "") {
     errors.push({ msg: "New password is required." })
@@ -371,7 +375,22 @@ accCont.changePassword = async function (req, res, next) {
   }
 
   try {
-    // Hash password
+    // Verify current password before allowing change
+    const account = await accountModel.getAccountById(account_id)
+    const isPasswordValid = await bcrypt.compare(current_password, account.account_password)
+
+    if (!isPasswordValid) {
+      let nav = await utilities.getNav()
+      const accountData = await accountModel.getAccountById(account_id)
+      return res.render("account/update", {
+        title: "Update Account",
+        nav,
+        accountData: accountData,
+        errors: [{ msg: "Current password is incorrect." }],
+      })
+    }
+
+    // Hash new password
     let hashedPassword = await bcrypt.hashSync(account_password, 10)
 
     const updateResult = await accountModel.updatePassword(account_id, hashedPassword)
@@ -381,11 +400,11 @@ accCont.changePassword = async function (req, res, next) {
       return res.redirect("/account/management")
     } else {
       let nav = await utilities.getNav()
-      const account = await accountModel.getAccountById(account_id)
+      const accountData = await accountModel.getAccountById(account_id)
       return res.render("account/update", {
         title: "Update Account",
         nav,
-        accountData: account,
+        accountData: accountData,
         errors: [{ msg: "Failed to change password. Please try again." }],
       })
     }
