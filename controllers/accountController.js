@@ -243,6 +243,7 @@ accCont.buildAccountUpdateView = async function (req, res, next) {
     nav,
     accountData: account,
     errors: null,
+    message: null,
   })
 }
 

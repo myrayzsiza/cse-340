@@ -11,7 +11,7 @@
   </div>
 <% } %>
 
-<% if (message && message.length) { %>
+<% if (typeof message !== 'undefined' && message && message.length) { %>
   <div class="notice" style="color: green; border: 1px solid green; padding: 12px; margin-bottom: 20px; border-radius: 4px;">
     <%= message %>
   </div>
