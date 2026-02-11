@@ -9,5 +9,5 @@ CREATE TABLE IF NOT EXISTS activity_log (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_activity_log_account_id ON activity_log(account_id);
-CREATE INDEX idx_activity_log_created_at ON activity_log(created_at);
+CREATE INDEX IF NOT EXISTS idx_activity_log_account_id ON activity_log(account_id);
+CREATE INDEX IF NOT EXISTS idx_activity_log_created_at ON activity_log(created_at);

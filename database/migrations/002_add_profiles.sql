@@ -13,4 +13,4 @@ CREATE TABLE IF NOT EXISTS profiles (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_profiles_account_id ON profiles(account_id);
+CREATE INDEX IF NOT EXISTS idx_profiles_account_id ON profiles(account_id);

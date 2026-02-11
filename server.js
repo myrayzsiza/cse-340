@@ -26,7 +26,12 @@ const session = require("express-session")
 const flash = require("connect-flash")
 
 const pool = require('./database/')
+const { runMigrations } = require('./database/migrations')
 
+// Run migrations on startup
+runMigrations().catch(error => {
+  console.error('Failed to run migrations, but continuing with server startup:', error.message)
+})
 
 /* ***********************
  * View Engine And Templates

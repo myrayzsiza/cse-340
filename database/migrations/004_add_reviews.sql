@@ -11,6 +11,6 @@ CREATE TABLE IF NOT EXISTS reviews (
   UNIQUE(inventory_id, account_id)
 );
 
-CREATE INDEX idx_reviews_inventory_id ON reviews(inventory_id);
-CREATE INDEX idx_reviews_account_id ON reviews(account_id);
-CREATE INDEX idx_reviews_is_approved ON reviews(is_approved);
+CREATE INDEX IF NOT EXISTS idx_reviews_inventory_id ON reviews(inventory_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_account_id ON reviews(account_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_is_approved ON reviews(is_approved);

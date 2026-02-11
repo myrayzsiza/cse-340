@@ -6,14 +6,19 @@ CREATE TABLE IF NOT EXISTS roles (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Add role_id to account table if it doesn't exist
-ALTER TABLE account ADD COLUMN IF NOT EXISTS role_id INTEGER DEFAULT 1 REFERENCES roles(role_id);
-
--- Insert default roles
+-- Insert default roles first (before adding foreign key constraint)
 INSERT INTO roles (role_name, description) VALUES 
   ('Client', 'Regular customer'),
   ('Employee', 'Employee account'),
   ('Admin', 'Administrator account')
 ON CONFLICT DO NOTHING;
 
-CREATE INDEX idx_account_role_id ON account(role_id);
+-- Add role_id to account table if it doesn't exist
+DO $$ 
+BEGIN 
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='account' AND column_name='role_id') THEN
+    ALTER TABLE account ADD COLUMN role_id INTEGER DEFAULT 1 REFERENCES roles(role_id);
+  END IF;
+END $$;
+
+CREATE INDEX IF NOT EXISTS idx_account_role_id ON account(role_id);
