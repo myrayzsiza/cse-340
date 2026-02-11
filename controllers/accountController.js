@@ -273,12 +273,6 @@ accCont.updateAccountInfo = async function (req, res, next) {
     errors.push({ msg: "Email is required." })
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(account_email)) {
     errors.push({ msg: "Valid email is required." })
-  } else {
-    // Check if email already exists (and belongs to a different account)
-    const existingAccount = await accountModel.getAccountByEmail(account_email)
-    if (existingAccount && existingAccount.account_id != account_id) {
-      errors.push({ msg: "Email is already registered with another account." })
-    }
   }
 
   if (errors.length > 0) {
@@ -296,6 +290,22 @@ accCont.updateAccountInfo = async function (req, res, next) {
   }
 
   try {
+    // Check if email already exists (and belongs to a different account)
+    const existingAccount = await accountModel.getAccountByEmail(account_email)
+    if (existingAccount && existingAccount.account_id != account_id) {
+      let nav = await utilities.getNav()
+      const account = await accountModel.getAccountById(account_id)
+      return res.render("account/update", {
+        title: "Update Account",
+        nav,
+        accountData: account,
+        account_firstname,
+        account_lastname,
+        account_email,
+        errors: [{ msg: "Email is already registered with another account." }],
+      })
+    }
+
     const updateResult = await accountModel.updateAccountInfo(
       account_id,
       account_firstname,
@@ -304,10 +314,13 @@ accCont.updateAccountInfo = async function (req, res, next) {
     )
 
     if (updateResult) {
+      // Update session data with new account information
       req.flash("message", "Account information updated successfully!")
-      res.locals.accountData.account_firstname = account_firstname
-      res.locals.accountData.account_lastname = account_lastname
-      res.locals.accountData.account_email = account_email
+      if (res.locals.accountData) {
+        res.locals.accountData.account_firstname = account_firstname
+        res.locals.accountData.account_lastname = account_lastname
+        res.locals.accountData.account_email = account_email
+      }
       return res.redirect("/account/management")
     } else {
       let nav = await utilities.getNav()
@@ -377,6 +390,17 @@ accCont.changePassword = async function (req, res, next) {
   try {
     // Verify current password before allowing change
     const account = await accountModel.getAccountById(account_id)
+    
+    if (!account) {
+      let nav = await utilities.getNav()
+      return res.render("account/update", {
+        title: "Update Account",
+        nav,
+        accountData: null,
+        errors: [{ msg: "Account not found." }],
+      })
+    }
+    
     const isPasswordValid = await bcrypt.compare(current_password, account.account_password)
 
     if (!isPasswordValid) {
