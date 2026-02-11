@@ -511,6 +511,38 @@ input[name$='Thumbnail'] {
   background-color: #f5f5f5;
 }
 
+/* Order button styling */
+.namePrice {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.order-btn {
+  background-color: var(--main-accent);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.order-btn:hover {
+  background-color: #0099b1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(1, 176, 211, 0.4);
+}
+
+.order-btn:active {
+  transform: translateY(0);
+}
+
 .boldList>li {
   font-size: larger;
   margin-bottom: .5rem;

@@ -97,6 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
               </a>
             </h2>
             <span>${price}</span>
+            <button class="order-btn" data-vehicle-id="${vehicle.inv_id}" data-vehicle-name="${vehicle.inv_make} ${vehicle.inv_model}">
+              Order Now
+            </button>
           </div>
         </li>`;
       });
@@ -119,5 +122,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Handle search input
   searchInput.addEventListener('input', filterAndSearch);
+
+  // Handle order button clicks
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('order-btn')) {
+      const isSignedIn = <%= JSON.stringify(typeof locals.accountData !== 'undefined' && locals.accountData) %>;
+      
+      if (!isSignedIn) {
+        showSignInModal();
+      } else {
+        const vehicleName = e.target.getAttribute('data-vehicle-name');
+        alert(`Thank you for your interest in the ${vehicleName}! Your order will be processed shortly.`);
+        // TODO: Process actual order here
+      }
+    }
+  });
+
+  // Show sign-in modal/prompt
+  function showSignInModal() {
+    const signInChoice = confirm('You must be signed in to order a vehicle. Would you like to sign in now?');
+    if (signInChoice) {
+      window.location.href = '/account/login';
+    }
+  }
 });
 </script>
