@@ -127,11 +127,20 @@ Util.buildClassificationGrid = async function (data) {
 }
 
 
-Util.buildSingleVehicleDisplay = async (vehicle) => {
+Util.buildSingleVehicleDisplay = async (vehicle, accountData = null) => {
   if (!vehicle) return '<div>Vehicle not found.</div>';
   const price = Number(vehicle.inv_price).toLocaleString("en-US", { style: "currency", currency: "USD" });
   const miles = Number(vehicle.inv_miles).toLocaleString("en-US");
   const imageUrl = getImagePath(vehicle.inv_image);
+  
+  // Build order button based on login status
+  let orderButton = '';
+  if (accountData && accountData.account_id) {
+    orderButton = `<a href="/order/checkout/${vehicle.inv_id}" class="order-btn">Order Now</a>`;
+  } else {
+    orderButton = `<a href="/account/login" class="order-btn">Login to Order</a>`;
+  }
+  
   return `
     <div class="vehicle-detail-container">
       <div class="vehicle-image">
@@ -143,6 +152,9 @@ Util.buildSingleVehicleDisplay = async (vehicle) => {
         <p><strong>Mileage:</strong> ${miles} miles</p>
         <p><strong>Description:</strong> ${vehicle.inv_description}</p>
         <p><strong>Color:</strong> ${vehicle.inv_color}</p>
+        <div class="vehicle-actions">
+          ${orderButton}
+        </div>
       </div>
     </div>
     <style>
@@ -170,6 +182,22 @@ Util.buildSingleVehicleDisplay = async (vehicle) => {
       .vehicle-info {
         flex: 2 1 300px;
         min-width: 250px;
+      }
+      .vehicle-actions {
+        margin-top: 1.5rem;
+      }
+      .order-btn {
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+      .order-btn:hover {
+        background-color: #0056b3;
       }
       @media (max-width: 700px) {
         .vehicle-detail-container {

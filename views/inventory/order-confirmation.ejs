@@ -1,0 +1,250 @@
+<%- nav %>
+
+<div class="confirmation-container">
+  <div class="confirmation-card">
+    <div class="success-icon">✓</div>
+    
+    <h1>Your Order Has Been Successfully Placed!</h1>
+    <p class="confirmation-message">Thank you for your order. We're processing your request and will contact you shortly with more details.</p>
+
+    <!-- Order Details -->
+    <section class="order-details">
+      <h2>Order #<%= order.order_id %></h2>
+      
+      <div class="detail-row">
+        <span class="label">Vehicle:</span>
+        <span class="value"><%= order.inv_year %> <%= order.inv_make %> <%= order.inv_model %></span>
+      </div>
+
+      <div class="detail-row">
+        <span class="label">Price:</span>
+        <span class="value">$<%= Number(order.inv_price).toLocaleString("en-US") %></span>
+      </div>
+
+      <div class="detail-row">
+        <span class="label">Order Date:</span>
+        <span class="value"><%= new Date(order.order_date).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %></span>
+      </div>
+
+      <div class="detail-row">
+        <span class="label">Status:</span>
+        <span class="value status"><%= order.order_status %></span>
+      </div>
+    </section>
+
+    <!-- Delivery Information -->
+    <section class="delivery-info">
+      <h2>Delivery Information</h2>
+
+      <div class="detail-row">
+        <span class="label">Phone:</span>
+        <span class="value"><%= order.order_phone %></span>
+      </div>
+
+      <div class="detail-row">
+        <span class="label">Address:</span>
+        <span class="value"><%= order.order_address %></span>
+      </div>
+
+      <div class="detail-row">
+        <span class="label">City, State, Zip:</span>
+        <span class="value"><%= order.order_city %>, <%= order.order_state %> <%= order.order_zip %></span>
+      </div>
+    </section>
+
+    <!-- Next Steps -->
+    <section class="next-steps">
+      <h2>What Happens Next?</h2>
+      <ol>
+        <li>We'll review your order and verify availability</li>
+        <li>Our team will contact you at the phone number provided to confirm details</li>
+        <li>We'll arrange delivery or pickup at your preferred time</li>
+        <li>Complete payment and finalize your vehicle purchase</li>
+      </ol>
+    </section>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <a href="/order/history" class="btn btn-primary">View All Orders</a>
+      <a href="/" class="btn btn-secondary">Continue Shopping</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .confirmation-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 1rem;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .confirmation-card {
+    background: white;
+    border: 2px solid #28a745;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .success-icon {
+    font-size: 4rem;
+    color: #28a745;
+    margin-bottom: 1rem;
+  }
+
+  .confirmation-card h1 {
+    color: #28a745;
+    margin: 0 0 1rem 0;
+    font-size: 1.8rem;
+  }
+
+  .confirmation-message {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .order-details,
+  .delivery-info,
+  .next-steps {
+    text-align: left;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+
+  .order-details h2,
+  .delivery-info h2,
+  .next-steps h2 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #28a745;
+    padding-bottom: 0.5rem;
+  }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .detail-row:last-child {
+    border-bottom: none;
+  }
+
+  .detail-row .label {
+    font-weight: bold;
+    color: #333;
+    min-width: 120px;
+  }
+
+  .detail-row .value {
+    color: #666;
+    text-align: right;
+    flex: 1;
+  }
+
+  .detail-row .status {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+  }
+
+  .next-steps ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .next-steps li {
+    margin: 0.75rem 0;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+  }
+
+  .btn-secondary {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+  }
+
+  @media (max-width: 600px) {
+    .confirmation-container {
+      padding: 0.5rem;
+    }
+
+    .confirmation-card {
+      padding: 1.5rem;
+    }
+
+    .confirmation-card h1 {
+      font-size: 1.5rem;
+    }
+
+    .detail-row {
+      flex-direction: column;
+    }
+
+    .detail-row .label {
+      margin-bottom: 0.25rem;
+    }
+
+    .detail-row .value {
+      text-align: left;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+</style>

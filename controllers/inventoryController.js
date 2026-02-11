@@ -43,7 +43,9 @@ invCont.getVehicleDetail = async function (req, res, next) {
   if (!vehicle) {
     return res.status(404).render("../errors/404", { title: "Not Found", nav })
   }
-  const htmlData = await utilities.buildSingleVehicleDisplay(vehicle)
+  // Pass account data if user is logged in
+  const accountData = req.accountData || null
+  const htmlData = await utilities.buildSingleVehicleDisplay(vehicle, accountData)
   const vehicleTitle = `${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}`
   res.render("./inventory/detail", {
     title: vehicleTitle,

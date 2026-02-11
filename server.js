@@ -18,6 +18,7 @@ const activityRoute = require("./routes/activityRoute")
 const reviewRoute = require("./routes/reviewRoute")
 const adminRoute = require("./routes/adminRoute")
 const searchRoute = require("./routes/searchRoute")
+const orderRoute = require("./routes/orderRoute")
 const utilities = require('./utilities/index')
 const cookieParser = require("cookie-parser")
 const jwt = require("jsonwebtoken")
@@ -111,6 +112,9 @@ app.use("/admin", adminRoute)
 
 // Search routes
 app.use("/search", searchRoute)
+
+// Order routes
+app.use("/order", orderRoute)
 
 
 
