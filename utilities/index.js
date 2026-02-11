@@ -133,12 +133,15 @@ Util.buildSingleVehicleDisplay = async (vehicle, accountData = null) => {
   const miles = Number(vehicle.inv_miles).toLocaleString("en-US");
   const imageUrl = getImagePath(vehicle.inv_image);
   
-  // Build order button based on login status
-  let orderButton = '';
+  // Build order buttons based on login status
+  let orderButtons = '';
   if (accountData && accountData.account_id) {
-    orderButton = `<a href="/order/checkout/${vehicle.inv_id}" class="order-btn">Order Now</a>`;
+    orderButtons = `
+      <a href="/order/checkout/${vehicle.inv_id}" class="order-btn">Buy Now</a>
+      <button class="cart-btn" onclick="addToCart(${vehicle.inv_id})" type="button">Add to Cart</button>
+    `;
   } else {
-    orderButton = `<a href="/account/login" class="order-btn">Login to Order</a>`;
+    orderButtons = `<a href="/account/login" class="order-btn">Login to Order</a>`;
   }
   
   return `
@@ -153,7 +156,7 @@ Util.buildSingleVehicleDisplay = async (vehicle, accountData = null) => {
         <p><strong>Description:</strong> ${vehicle.inv_description}</p>
         <p><strong>Color:</strong> ${vehicle.inv_color}</p>
         <div class="vehicle-actions">
-          ${orderButton}
+          ${orderButtons}
         </div>
       </div>
     </div>
@@ -185,19 +188,34 @@ Util.buildSingleVehicleDisplay = async (vehicle, accountData = null) => {
       }
       .vehicle-actions {
         margin-top: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
       }
-      .order-btn {
+      .order-btn, .cart-btn {
         display: inline-block;
-        background-color: #007bff;
-        color: white;
         padding: 10px 20px;
         border-radius: 5px;
         text-decoration: none;
         font-weight: bold;
         transition: background-color 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      .order-btn {
+        background-color: #007bff;
+        color: white;
       }
       .order-btn:hover {
         background-color: #0056b3;
+      }
+      .cart-btn {
+        background-color: #28a745;
+        color: white;
+      }
+      .cart-btn:hover {
+        background-color: #218838;
       }
       @media (max-width: 700px) {
         .vehicle-detail-container {
@@ -209,6 +227,38 @@ Util.buildSingleVehicleDisplay = async (vehicle, accountData = null) => {
         }
       }
     </style>
+    <script>
+      function addToCart(invId) {
+        const quantity = prompt("How many of this vehicle would you like to add?", "1");
+        if (quantity === null || quantity === "") return;
+        
+        const qty = parseInt(quantity);
+        if (isNaN(qty) || qty < 1) {
+          alert("Please enter a valid quantity");
+          return;
+        }
+        
+        fetch(\`/cart/add/\${invId}\`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ quantity: qty })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Vehicle added to cart! (' + data.cartCount + ' items in cart)');
+          } else {
+            alert('Error: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error adding to cart');
+        });
+      }
+    </script>
   `;
 };
 

@@ -1,0 +1,343 @@
+<%- nav %>
+
+<div class="checkout-container">
+  <h1><%= title %></h1>
+  
+  <% if (errors && errors.length > 0) { %>
+    <div class="alert alert-danger">
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.msg %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+
+  <div class="checkout-wrapper">
+    <div class="checkout-form">
+      <h2>Shipping Information</h2>
+      <form action="/cart/process" method="POST">
+        <fieldset>
+          <legend>Delivery Address</legend>
+          
+          <label for="phone">Phone Number *</label>
+          <input type="tel" id="phone" name="phone" placeholder="123-456-7890" 
+            value="<%= typeof phone !== 'undefined' ? phone : (account.account_phone || '') %>" required />
+          
+          <label for="address">Street Address *</label>
+          <input type="text" id="address" name="address" placeholder="123 Main St"
+            value="<%= typeof address !== 'undefined' ? address : (account.account_address || '') %>" required />
+          
+          <label for="city">City *</label>
+          <input type="text" id="city" name="city" placeholder="Anytown"
+            value="<%= typeof city !== 'undefined' ? city : (account.account_city || '') %>" required />
+          
+          <label for="state">State *</label>
+          <input type="text" id="state" name="state" placeholder="CA"
+            value="<%= typeof state !== 'undefined' ? state : (account.account_state || '') %>" required />
+          
+          <label for="zip">Zip Code *</label>
+          <input type="text" id="zip" name="zip" placeholder="12345"
+            value="<%= typeof zip !== 'undefined' ? zip : (account.account_zip || '') %>" required />
+        </fieldset>
+        
+        <fieldset>
+          <legend>Payment Information</legend>
+          
+          <label for="payment_account">Payment Account Number *</label>
+          <input type="text" id="payment_account" name="payment_account" placeholder="Enter payment account"
+            value="<%= typeof payment_account !== 'undefined' ? payment_account : '' %>" required />
+        </fieldset>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Complete Order</button>
+          <a href="/cart/view" class="btn btn-secondary">Return to Cart</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="order-summary">
+      <h2>Order Summary</h2>
+      
+      <div class="items-list">
+        <% cartItems.forEach((item, index) => { %>
+          <div class="order-item">
+            <div class="item-details">
+              <strong><%= item.inv_year %> <%= item.inv_make %> <%= item.inv_model %></strong>
+              <p class="item-qty">Qty: <%= item.quantity %></p>
+            </div>
+            <div class="item-price">
+              <%= new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.inv_price * item.quantity) %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+      
+      <div class="summary-totals">
+        <div class="summary-row">
+          <span>Items:</span>
+          <strong>
+            <%= cartItems.reduce((sum, item) => sum + item.quantity, 0) %>
+          </strong>
+        </div>
+        <div class="summary-row total">
+          <span>Total:</span>
+          <strong class="total-amount">
+            <%= new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cartTotal) %>
+          </strong>
+        </div>
+      </div>
+
+      <div class="customer-info box">
+        <h3>Customer Information</h3>
+        <p>
+          <strong><%= account.account_firstname %> <%= account.account_lastname %></strong><br/>
+          <%= account.account_email %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .checkout-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .alert {
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+  }
+
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  .alert-danger ul {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+
+  .alert-danger li {
+    margin: 0.5rem 0;
+  }
+
+  .checkout-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+  }
+
+  .checkout-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .checkout-form h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 1rem;
+  }
+
+  fieldset {
+    border: none;
+    padding: 1.5rem 0;
+    margin: 0;
+  }
+
+  fieldset:not(:last-of-type) {
+    border-bottom: 1px solid #eee;
+  }
+
+  legend {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+
+  label {
+    display: block;
+    margin: 1rem 0 0.5rem 0;
+    font-weight: 500;
+    color: #333;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+
+  .order-summary {
+    background: white;
+    padding: 2rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+  }
+
+  .order-summary h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 1rem;
+  }
+
+  .items-list {
+    background: #f9f9f9;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    gap: 1rem;
+  }
+
+  .order-item:last-child {
+    border-bottom: none;
+  }
+
+  .item-details {
+    flex: 1;
+  }
+
+  .item-details strong {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .item-qty {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+  }
+
+  .item-price {
+    text-align: right;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  .summary-totals {
+    background: #f9f9f9;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+    padding: 0.5rem 0;
+  }
+
+  .summary-row.total {
+    border-top: 2px solid #ddd;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .total-amount {
+    color: #007bff;
+  }
+
+  .box {
+    background: #f9f9f9;
+    padding: 1rem;
+    border-radius: 4px;
+    border-left: 4px solid #007bff;
+  }
+
+  .box h3 {
+    margin-top: 0;
+    color: #333;
+  }
+
+  .box p {
+    margin: 0;
+    color: #666;
+  }
+
+  @media (max-width: 768px) {
+    .checkout-wrapper {
+      grid-template-columns: 1fr;
+    }
+
+    .order-summary {
+      position: static;
+    }
+
+    .form-actions {
+      flex-direction: column;
+    }
+
+    .btn {
+      flex: none;
+    }
+  }
+</style>

@@ -1,0 +1,365 @@
+<%- nav %>
+
+<div class="confirmation-container">
+  <div class="confirmation-card">
+    <div class="success-icon">✓</div>
+    <h1>Order Confirmed!</h1>
+    <p class="confirmation-message">Thank you for your order. Your vehicles will be processed shortly.</p>
+    
+    <% if (locals.messages && messages.message) { %>
+      <div class="alert alert-success">
+        <%= messages.message %>
+      </div>
+    <% } %>
+
+    <div class="order-details">
+      <h2>Order Details</h2>
+      
+      <div class="orders-grid">
+        <% orders.forEach((order, index) => { %>
+          <div class="order-card">
+            <div class="order-header">
+              <h3><%= order.inv_year %> <%= order.inv_make %> <%= order.inv_model %></h3>
+              <span class="order-id">Order #<%= order.order_id %></span>
+            </div>
+            
+            <div class="order-row">
+              <span class="label">Price:</span>
+              <span class="value"><%= new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(order.inv_price) %></span>
+            </div>
+            
+            <div class="order-row">
+              <span class="label">Status:</span>
+              <span class="value status <%= order.order_status.toLowerCase() %>"><%= order.order_status %></span>
+            </div>
+            
+            <div class="order-row">
+              <span class="label">Order Date:</span>
+              <span class="value"><%= new Date(order.order_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+      <div class="shipping-info">
+        <h3>Shipping Information</h3>
+        <p>
+          <%= orders[0].order_address %><br/>
+          <%= orders[0].order_city %>, <%= orders[0].order_state %> <%= orders[0].order_zip %>
+        </p>
+        <p>Phone: <%= orders[0].order_phone %></p>
+      </div>
+
+      <div class="order-summary">
+        <div class="summary-row">
+          <span>Total Items:</span>
+          <strong><%= orders.length %></strong>
+        </div>
+        <div class="summary-row total">
+          <span>Total Amount:</span>
+          <strong class="total-amount">
+            <%= new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalPrice) %>
+          </strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="next-steps">
+      <h2>What's Next?</h2>
+      <ul>
+        <li>You will receive a confirmation email shortly</li>
+        <li>Your vehicles will be prepared for delivery within 3-5 business days</li>
+        <li>You can track your orders in your account</li>
+      </ul>
+    </div>
+
+    <div class="actions">
+      <a href="/order/history" class="btn btn-primary">View All Orders</a>
+      <a href="/inv" class="btn btn-secondary">Continue Shopping</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .confirmation-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .confirmation-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .success-icon {
+    width: 80px;
+    height: 80px;
+    background-color: #28a745;
+    color: white;
+    font-size: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+  }
+
+  .confirmation-card h1 {
+    color: #28a745;
+    margin: 0 0 1rem 0;
+  }
+
+  .confirmation-message {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .alert {
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+  }
+
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  .order-details {
+    text-align: left;
+    margin: 2rem 0;
+    background: #f9f9f9;
+    padding: 2rem;
+    border-radius: 4px;
+  }
+
+  .order-details h2 {
+    text-align: center;
+    color: #333;
+    margin-top: 0;
+  }
+
+  .orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .order-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 4px;
+    border-left: 4px solid #007bff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .order-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .order-id {
+    background-color: #007bff;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .order-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .order-row:last-child {
+    border-bottom: none;
+  }
+
+  .label {
+    font-weight: 500;
+    color: #666;
+  }
+
+  .value {
+    text-align: right;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    text-transform: capitalize;
+  }
+
+  .status.pending {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  .status.confirmed {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  .status.completed {
+    background-color: #d1ecf1;
+    color: #0c5460;
+  }
+
+  .shipping-info {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #28a745;
+  }
+
+  .shipping-info h3 {
+    margin-top: 0;
+    color: #333;
+  }
+
+  .shipping-info p {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+  }
+
+  .order-summary {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 4px;
+    border: 2px solid #007bff;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+  }
+
+  .summary-row.total {
+    border-top: 2px solid #ddd;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .total-amount {
+    color: #007bff;
+  }
+
+  .next-steps {
+    text-align: left;
+    background: white;
+    padding: 2rem;
+    border-radius: 4px;
+    margin: 2rem 0;
+  }
+
+  .next-steps h2 {
+    color: #333;
+    margin-top: 0;
+  }
+
+  .next-steps ul {
+    list-style-position: inside;
+    color: #666;
+    line-height: 1.8;
+  }
+
+  .next-steps li {
+    margin: 0.5rem 0;
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+
+  @media (max-width: 768px) {
+    .confirmation-card {
+      padding: 2rem 1rem;
+    }
+
+    .success-icon {
+      width: 60px;
+      height: 60px;
+      font-size: 2rem;
+    }
+
+    .order-details {
+      padding: 1.5rem;
+    }
+
+    .orders-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .order-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .actions {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+</style>

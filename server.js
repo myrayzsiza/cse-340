@@ -19,6 +19,7 @@ const reviewRoute = require("./routes/reviewRoute")
 const adminRoute = require("./routes/adminRoute")
 const searchRoute = require("./routes/searchRoute")
 const orderRoute = require("./routes/orderRoute")
+const cartRoute = require("./routes/cartRoute")
 const utilities = require('./utilities/index')
 const cookieParser = require("cookie-parser")
 const jwt = require("jsonwebtoken")
@@ -127,6 +128,9 @@ app.use("/search", searchRoute)
 
 // Order routes
 app.use("/order", orderRoute)
+
+// Cart routes
+app.use("/cart", cartRoute)
 
 
 

@@ -6,6 +6,7 @@
       <% if (locals.accountData) { %>
         <a href="/account/management" title="Account management">Welcome <%= accountData.account_firstname %></a>
         <a href="/account/logout" title="Logout">Logout</a>
+        <a href="/cart/view" title="Shopping Cart" class="cart-link">🛒 Cart</a>
       <% } else { %>
         <a href="/account/login" title="Click to log in">My Account</a>
       <% } %>
