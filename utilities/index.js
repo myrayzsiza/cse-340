@@ -115,6 +115,7 @@ Util.buildClassificationGrid = async function (data) {
       grid += '<a href="/inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + " " + vehicle.inv_model + ' details">' + vehicle.inv_make + " " + vehicle.inv_model + "</a>"
       grid += "</h2>"
       grid += "<span>$" + new Intl.NumberFormat("en-US").format(vehicle.inv_price) + "</span>"
+      grid += `<button class="order-btn" data-vehicle-id="${vehicle.inv_id}" data-vehicle-name="${vehicle.inv_make} ${vehicle.inv_model}">Order Now</button>`
       grid += "</div>"
       grid += "</li>"
     })
