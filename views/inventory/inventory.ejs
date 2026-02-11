@@ -126,14 +126,15 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle order button clicks
   document.addEventListener('click', function(e) {
     if (e.target.classList.contains('order-btn')) {
-      const isSignedIn = <%= JSON.stringify(typeof locals.accountData !== 'undefined' && locals.accountData) %>;
+      const isSignedIn = <%= typeof locals.accountData !== 'undefined' && locals.accountData ? 'true' : 'false' %>;
+      const vehicleId = e.target.getAttribute('data-vehicle-id');
+      const vehicleName = e.target.getAttribute('data-vehicle-name');
       
-      if (!isSignedIn) {
+      if (isSignedIn === 'false') {
         showSignInModal();
       } else {
-        const vehicleName = e.target.getAttribute('data-vehicle-name');
-        alert(`Thank you for your interest in the ${vehicleName}! Your order will be processed shortly.`);
-        // TODO: Process actual order here
+        // Redirect to checkout page
+        window.location.href = `/order/checkout/${vehicleId}`;
       }
     }
   });
