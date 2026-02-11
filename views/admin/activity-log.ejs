@@ -1,0 +1,115 @@
+<%- include('../partials/header') %>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h3>All Activity Log</h3>
+        </div>
+        <div class="card-body mb-3">
+          <form id="filterForm" class="row g-3">
+            <div class="col-md-5">
+              <label for="startDate" class="form-label">Start Date:</label>
+              <input type="date" class="form-control" id="startDate" name="startDate" />
+            </div>
+            <div class="col-md-5">
+              <label for="endDate" class="form-label">End Date:</label>
+              <input type="date" class="form-control" id="endDate" name="endDate" />
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <button type="button" class="btn btn-secondary w-100" onclick="filterByDate()">Filter</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-striped mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>Account ID</th>
+                <th>User</th>
+                <th>Email</th>
+                <th>Action</th>
+                <th>Description</th>
+                <th>IP Address</th>
+                <th>Date/Time</th>
+              </tr>
+            </thead>
+            <tbody id="activityBody">
+              <% if (activities && activities.length > 0) { %>
+                <% activities.forEach(activity => { %>
+                  <tr>
+                    <td><%= activity.account_id %></td>
+                    <td><%= activity.account_firstname %> <%= activity.account_lastname %></td>
+                    <td><%= activity.account_email %></td>
+                    <td><span class="badge bg-info"><%= activity.action_type %></span></td>
+                    <td><%= activity.description || '-' %></td>
+                    <td><small><%= activity.ip_address || '-' %></small></td>
+                    <td><%= new Date(activity.created_at).toLocaleString() %></td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="7" class="text-center">No activity records found.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function filterByDate() {
+    const startDate = document.getElementById("startDate").value;
+    const endDate = document.getElementById("endDate").value;
+
+    if (!startDate || !endDate) {
+      alert("Please select both start and end dates");
+      return;
+    }
+
+    fetch("/activity/date-range", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        startDate: startDate,
+        endDate: endDate,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.success) {
+          const tbody = document.getElementById("activityBody");
+          tbody.innerHTML = "";
+
+          if (result.data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center">No records found for this date range.</td></tr>';
+          } else {
+            result.data.forEach((activity) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                <td>${activity.account_id}</td>
+                <td>${activity.account_firstname} ${activity.account_lastname}</td>
+                <td>${activity.account_email}</td>
+                <td><span class="badge bg-info">${activity.action_type}</span></td>
+                <td>${activity.description || "-"}</td>
+                <td><small>${activity.ip_address || "-"}</small></td>
+                <td>${new Date(activity.created_at).toLocaleString()}</td>
+              `;
+              tbody.appendChild(row);
+            });
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred");
+      });
+  }
+</script>
+<%- include('../partials/footer') %>

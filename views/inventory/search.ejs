@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <h2 class="mb-4">Search Inventory</h2>
+
+      <form method="GET" action="/search/results" class="mb-4">
+        <div class="input-group input-group-lg">
+          <input
+            type="text"
+            name="searchTerm"
+            class="form-control"
+            placeholder="Search by make, model, or description..."
+            value="<%= searchTerm %>"
+          />
+          <button class="btn btn-primary" type="submit">Search</button>
+          <a href="/search/advanced" class="btn btn-secondary">Advanced Search</a>
+        </div>
+      </form>
+
+      <% if (errors) { %>
+        <div class="alert alert-info">
+          <% errors.forEach(error => { %>
+            <p><%= error.msg %></p>
+          <% }); %>
+        </div>
+      <% } %>
+
+      <% if (results && results.length > 0) { %>
+        <h3>Search Results (<%= results.length %>)</h3>
+        <div class="row">
+          <% results.forEach(vehicle => { %>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="card h-100">
+                <img
+                  src="<%= vehicle.inv_image %>"
+                  class="card-img-top"
+                  alt="<%= vehicle.inv_make %> <%= vehicle.inv_model %>"
+                />
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %>
+                  </h5>
+                  <p class="card-text">
+                    <strong>Price:</strong> $<%= vehicle.inv_price.toLocaleString() %><br />
+                    <strong>Miles:</strong> <%= vehicle.inv_miles.toLocaleString() %><br />
+                  </p>
+                  <a href="/inventory/detail/<%= vehicle.inv_id %>" class="btn btn-primary btn-sm">
+                    View Details
+                  </a>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+<%- include('../partials/footer') %>

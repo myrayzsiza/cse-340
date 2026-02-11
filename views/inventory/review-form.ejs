@@ -1,0 +1,115 @@
+<%- include('../partials/header') %>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header bg-warning text-dark">
+          <h3>Write a Review for <%= inventory?.inv_year %> <%= inventory?.inv_make %> <%= inventory?.inv_model %></h3>
+        </div>
+        <div class="card-body">
+          <% if (errors) { %>
+            <div class="alert alert-danger">
+              <ul>
+                <% errors.forEach(error => { %>
+                  <li><%= error.msg %></li>
+                <% }); %>
+              </ul>
+            </div>
+          <% } %>
+
+          <form id="reviewForm">
+            <div class="form-group mb-3">
+              <label for="rating">Rating (1-5 stars):</label>
+              <div class="rating">
+                <% for (let i = 5; i >= 1; i--) { %>
+                  <input type="radio" id="star<%= i %>" name="rating" value="<%= i %>" <%= review?.rating === i ? 'checked' : '' %> required />
+                  <label for="star<%= i %>" class="star" title="<%= i %> stars">★</label>
+                <% } %>
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="review_text">Your Review:</label>
+              <textarea
+                class="form-control"
+                id="review_text"
+                name="review_text"
+                rows="4"
+                maxlength="1000"
+                placeholder="Share your experience with this vehicle..."
+              ><%= review?.review_text || '' %></textarea>
+              <small class="form-text text-muted">Max 1000 characters</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+            <a href="/inventory/detail/<%= inventory?.inv_id %>" class="btn btn-secondary">Cancel</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    width: fit-content;
+  }
+
+  .rating input {
+    display: none;
+  }
+
+  .rating label {
+    cursor: pointer;
+    font-size: 2rem;
+    color: #ddd;
+    transition: color 0.2s;
+  }
+
+  .rating input:checked ~ label,
+  .rating label:hover,
+  .rating label:hover ~ label {
+    color: #ffc107;
+  }
+</style>
+
+<script>
+  document.getElementById("reviewForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const rating = formData.get("rating");
+    const review_text = formData.get("review_text");
+
+    if (!rating) {
+      alert("Please select a rating");
+      return;
+    }
+
+    try {
+      const response = await fetch(`/reviews/<%= inventory?.inv_id %>`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ rating, review_text }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert(result.message);
+        window.location.href = `/inventory/detail/<%= inventory?.inv_id %>`;
+      } else {
+        alert("Error: " + (result.errors?.[0]?.msg || result.message));
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while submitting your review");
+    }
+  });
+</script>
+<%- include('../partials/footer') %>

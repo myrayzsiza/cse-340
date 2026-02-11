@@ -145,6 +145,22 @@ async function clearResetToken(accountId) {
   }
 }
 
+/* ****************************
+ *  Delete account
+ **************************** */
+async function deleteAccount(accountId) {
+  try {
+    const data = await pool.query(
+      "DELETE FROM account WHERE account_id = $1",
+      [accountId]
+    )
+    return data.rowCount > 0
+  } catch (error) {
+    console.error("deleteAccount error: " + error)
+    throw error
+  }
+}
+
 module.exports = {
   getAccountById,
   getAccountByEmail,
@@ -154,4 +170,5 @@ module.exports = {
   saveResetToken,
   getAccountByResetToken,
   clearResetToken,
+  deleteAccount,
 }

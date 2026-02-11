@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+const { checkLogin } = require("../middleware/auth")
 
 // Simple image path fixer - ensure paths include /vehicles/
 function getImagePath(imagePath) {
@@ -188,5 +189,6 @@ module.exports = {
   getImagePath,
   buildVehicleDetailHTML,
   buildClassificationList,
+  checkLogin,
   ...Util
 }

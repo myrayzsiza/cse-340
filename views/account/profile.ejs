@@ -1,0 +1,44 @@
+<%- include('../partials/header') %>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h3>My Profile</h3>
+        </div>
+        <div class="card-body">
+          <% if (account) { %>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <h5>Personal Information</h5>
+                <p><strong>First Name:</strong> <%= account.account_firstname %></p>
+                <p><strong>Last Name:</strong> <%= account.account_lastname %></p>
+                <p><strong>Email:</strong> <%= account.account_email %></p>
+                <p><strong>Account Type:</strong> <%= account.account_type %></p>
+              </div>
+              <div class="col-md-6">
+                <% if (profile) { %>
+                  <h5>Profile Details</h5>
+                  <p><strong>Phone:</strong> <%= profile.phone_number || 'Not provided' %></p>
+                  <p><strong>Address:</strong> <%= profile.address || 'Not provided' %></p>
+                  <p><strong>City:</strong> <%= profile.city || 'Not provided' %></p>
+                  <p><strong>State:</strong> <%= profile.state || 'Not provided' %></p>
+                  <p><strong>Zip Code:</strong> <%= profile.zip_code || 'Not provided' %></p>
+                  <p><strong>Bio:</strong></p>
+                  <p><%= profile.bio || 'Not provided' %></p>
+                <% } else { %>
+                  <p>No profile information yet.</p>
+                <% } %>
+              </div>
+            </div>
+            <div class="mt-4">
+              <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
+              <a href="/account/management" class="btn btn-secondary">Edit Account</a>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../partials/footer') %>

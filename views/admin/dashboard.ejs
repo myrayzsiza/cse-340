@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="mb-4">Admin Dashboard</h1>
+
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title">Total Users</h5>
+              <p class="card-text display-4">
+                <%= roleStats.reduce((sum, r) => sum + (r.count || 0), 0) %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <% roleStats.forEach(stat => { %>
+          <div class="col-md-4">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title"><%= stat.role_name || 'Unknown' %></h5>
+                <p class="card-text display-4"><%= stat.count || 0 %></p>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Management Options</h5>
+        </div>
+        <div class="card-body">
+          <div class="btn-group" role="group">
+            <a href="/admin/users" class="btn btn-primary">Manage Users</a>
+            <a href="/activity/all" class="btn btn-success">View Activity Log</a>
+            <a href="/reviews/admin/pending" class="btn btn-warning">Review Pending Reviews</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-header bg-secondary text-white">
+          <h5 class="mb-0">Recent Accounts</h5>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Type</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% accounts.slice(0, 10).forEach(account => { %>
+                <tr>
+                  <td><%= account.account_id %></td>
+                  <td><%= account.account_firstname %> <%= account.account_lastname %></td>
+                  <td><%= account.account_email %></td>
+                  <td><%= account.account_type %></td>
+                  <td><span class="badge bg-info"><%= account.role_name || 'N/A' %></span></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../partials/footer') %>

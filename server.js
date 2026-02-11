@@ -13,6 +13,11 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
+const profileRoute = require("./routes/profileRoute")
+const activityRoute = require("./routes/activityRoute")
+const reviewRoute = require("./routes/reviewRoute")
+const adminRoute = require("./routes/adminRoute")
+const searchRoute = require("./routes/searchRoute")
 const utilities = require('./utilities/index')
 const cookieParser = require("cookie-parser")
 const jwt = require("jsonwebtoken")
@@ -91,6 +96,21 @@ app.use("/inv", inventoryRoute)
 
 // Account routes
 app.use("/account", accountRoute)
+
+// Profile routes
+app.use("/profile", profileRoute)
+
+// Activity routes
+app.use("/activity", activityRoute)
+
+// Review routes
+app.use("/reviews", reviewRoute)
+
+// Admin routes
+app.use("/admin", adminRoute)
+
+// Search routes
+app.use("/search", searchRoute)
 
 
 

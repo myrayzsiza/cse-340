@@ -1,0 +1,137 @@
+<%- include('../partials/header') %>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <h2 class="mb-4">Advanced Search</h2>
+
+      <form method="POST" action="/search/advanced/results" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="make" class="form-label">Make:</label>
+                <select class="form-select" id="make" name="make">
+                  <option value="">-- Select a make --</option>
+                  <% makes.forEach(m => { %>
+                    <option value="<%= m.inv_make %>" <%= filters?.make === m.inv_make ? 'selected' : '' %>>
+                      <%= m.inv_make %>
+                    </option>
+                  <% }); %>
+                </select>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="model" class="form-label">Model:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="model"
+                  name="model"
+                  placeholder="Enter model (e.g., Mustang)"
+                  value="<%= filters?.model || '' %>"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label for="minYear" class="form-label">Min Year:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="minYear"
+                  name="minYear"
+                  min="1900"
+                  max="<%= new Date().getFullYear() %>"
+                  value="<%= filters?.minYear || '' %>"
+                />
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="maxYear" class="form-label">Max Year:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="maxYear"
+                  name="maxYear"
+                  min="1900"
+                  max="<%= new Date().getFullYear() %>"
+                  value="<%= filters?.maxYear || '' %>"
+                />
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="minPrice" class="form-label">Min Price:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="minPrice"
+                  name="minPrice"
+                  min="0"
+                  step="100"
+                  value="<%= filters?.minPrice || '' %>"
+                />
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="maxPrice" class="form-label">Max Price:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="maxPrice"
+                  name="maxPrice"
+                  min="0"
+                  step="100"
+                  value="<%= filters?.maxPrice || '' %>"
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a href="/search" class="btn btn-secondary">Simple Search</a>
+          </div>
+        </div>
+      </form>
+
+      <% if (errors && results === null) { %>
+        <div class="alert alert-info">
+          <% errors.forEach(error => { %>
+            <p><%= error.msg %></p>
+          <% }); %>
+        </div>
+      <% } %>
+
+      <% if (results && results.length > 0) { %>
+        <h3>Results (<%= results.length %> vehicles found)</h3>
+        <div class="row">
+          <% results.forEach(vehicle => { %>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="card h-100">
+                <img
+                  src="<%= vehicle.inv_image %>"
+                  class="card-img-top"
+                  alt="<%= vehicle.inv_make %> <%= vehicle.inv_model %>"
+                />
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %>
+                  </h5>
+                  <p class="card-text">
+                    <strong>Price:</strong> $<%= vehicle.inv_price.toLocaleString() %><br />
+                    <strong>Miles:</strong> <%= vehicle.inv_miles.toLocaleString() %><br />
+                  </p>
+                  <a href="/inventory/detail/<%= vehicle.inv_id %>" class="btn btn-primary btn-sm">
+                    View Details
+                  </a>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } else if (results && results.length === 0) { %>
+        <div class="alert alert-info">No vehicles match your search criteria.</div>
+      <% } %>
+    </div>
+  </div>
+</div>
+<%- include('../partials/footer') %>
