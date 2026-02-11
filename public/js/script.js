@@ -134,9 +134,20 @@ function initInventoryTableSort() {
   }
 }
 
+// Handle Own Today button
+function initOwnTodayButton() {
+  const actionBtn = document.getElementById('actionbtn');
+  if (actionBtn) {
+    actionBtn.addEventListener('click', function() {
+      window.location.href = '/inv';
+    });
+  }
+}
+
 // Initialize all functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
   validateClassificationForm();
   validateInventoryForm();
   initInventoryTableSort();
+  initOwnTodayButton();
 });
