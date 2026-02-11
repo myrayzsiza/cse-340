@@ -1,5 +1,11 @@
 <%- nav %>
 
+<% if (locals.message) { %>
+  <div class="message success">
+    <%= message %>
+  </div>
+<% } %>
+
 <div class="confirmation-container">
   <div class="confirmation-card">
     <div class="success-icon">✓</div>
