@@ -100,6 +100,18 @@
           />
         </div>
 
+        <div class="form-group">
+          <label for="payment_account">Payment Account Number:</label>
+          <input 
+            type="text" 
+            id="payment_account" 
+            name="payment_account" 
+            placeholder="e.g., 1234-5678-9012-3456"
+            value="<%= locals.payment_account || '' %>"
+            required
+          />
+        </div>
+
         <div class="form-actions">
           <button type="submit" class="btn btn-primary">Confirm Order</button>
           <a href="/inv/detail/<%= vehicle.inv_id %>" class="btn btn-secondary">Cancel</a>

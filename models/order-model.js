@@ -3,14 +3,14 @@ const pool = require("../database/")
 /* ****************************
  *  Place a new order
  **************************** */
-async function placeOrder(accountId, invId, phone, address, city, state, zip) {
+async function placeOrder(accountId, invId, phone, address, city, state, zip, paymentAccount) {
   try {
     const sql = `
-      INSERT INTO orders (account_id, inv_id, order_phone, order_address, order_city, order_state, order_zip)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      INSERT INTO orders (account_id, inv_id, order_phone, order_address, order_city, order_state, order_zip, order_payment_account)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *`
 
-    const data = await pool.query(sql, [accountId, invId, phone, address, city, state, zip])
+    const data = await pool.query(sql, [accountId, invId, phone, address, city, state, zip, paymentAccount])
     return data.rows[0]
   } catch (error) {
     console.error("placeOrder error: " + error)

@@ -44,7 +44,7 @@ orderCont.buildCheckoutForm = async function (req, res, next) {
 orderCont.processOrder = async function (req, res, next) {
   try {
     const { invId } = req.params
-    const { phone, address, city, state, zip } = req.body
+    const { phone, address, city, state, zip, payment_account } = req.body
     const accountId = req.accountData.account_id
     
     // Basic validation
@@ -54,6 +54,7 @@ orderCont.processOrder = async function (req, res, next) {
     if (!city || city.trim() === "") errors.push({ msg: "City is required" })
     if (!state || state.trim() === "") errors.push({ msg: "State is required" })
     if (!zip || zip.trim() === "") errors.push({ msg: "Zip code is required" })
+    if (!payment_account || payment_account.trim() === "") errors.push({ msg: "Payment account number is required" })
     
     // If there are validation errors, re-render the form
     if (errors.length > 0) {
@@ -71,11 +72,12 @@ orderCont.processOrder = async function (req, res, next) {
         city,
         state,
         zip,
+        payment_account,
       })
     }
     
     // Place the order
-    const order = await orderModel.placeOrder(accountId, invId, phone, address, city, state, zip)
+    const order = await orderModel.placeOrder(accountId, invId, phone, address, city, state, zip, payment_account)
     
     req.flash("message", "Your order has been successfully placed!")
     res.redirect(`/order/confirmation/${order.order_id}`)
